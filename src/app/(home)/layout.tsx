@@ -1,7 +1,5 @@
 import React from 'react';
-import { Navbar } from './navbar';
-import { Footer } from './footer';
-import { SearchFilters } from './search-filters';
+import { Navbar, Footer, SearchFilters } from '@/containers/home';
 
 interface Props {
   children: React.ReactNode;

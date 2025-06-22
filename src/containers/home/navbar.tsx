@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 import { NavbarSidebar } from './navbar-sidebar';
 import { MenuIcon } from 'lucide-react';
+import { useAppSelector } from '@/store/hooks';
+import { selectedUser } from '@/reducers/userSlice';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -46,6 +48,7 @@ const navbarItems = [
 export const Navbar = () => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const user = useAppSelector(selectedUser);
   return (
     <nav className="flex h-20 justify-between border-b bg-white font-medium">
       <Link href="/" className="flex items-center pl-6">
@@ -70,23 +73,36 @@ export const Navbar = () => {
           </NavbarItem>
         ))}
       </div>
-
-      <div className="hidden lg:flex">
-        <Button
-          asChild
-          variant="secondary"
-          className="h-full rounded-none border-t-0 border-r-0 border-b-0 border-l bg-white px-12 text-lg transition-colors hover:bg-pink-400"
-        >
-          <Link href="sign-in">Log In</Link>
-        </Button>
-        <Button
-          asChild
-          className="h-full rounded-none border-t-0 border-r-0 border-b-0 border-l bg-black px-12 text-lg text-white transition-colors hover:bg-pink-400 hover:text-black"
-        >
-          <Link href="sign-up">Start Selling</Link>
-        </Button>
-      </div>
-
+      {user?.loginStatus ? (
+        <div className="hidden lg:flex">
+          <Button
+            asChild
+            className="h-full rounded-none border-t-0 border-r-0 border-b-0 border-l bg-black px-12 text-lg text-white transition-colors hover:bg-pink-400 hover:text-black"
+          >
+            <Link href="/admin">Dashboard</Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="hidden lg:flex">
+          <Button
+            asChild
+            variant="secondary"
+            className="h-full rounded-none border-t-0 border-r-0 border-b-0 border-l bg-white px-12 text-lg transition-colors hover:bg-pink-400"
+          >
+            <Link prefetch href="/sign-in">
+              Log In
+            </Link>
+          </Button>
+          <Button
+            asChild
+            className="h-full rounded-none border-t-0 border-r-0 border-b-0 border-l bg-black px-12 text-lg text-white transition-colors hover:bg-pink-400 hover:text-black"
+          >
+            <Link prefetch href="/sign-up">
+              Start Selling
+            </Link>
+          </Button>
+        </div>
+      )}
       <div className="flex items-center justify-center lg:hidden">
         <Button
           asChild

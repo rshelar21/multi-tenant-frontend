@@ -1,10 +1,13 @@
-'use client'
+'use client';
 import { Input } from '@/components/ui/input';
-import { ListFilterIcon, SearchIcon } from 'lucide-react';
+import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 import { List } from './filters.constant';
 import { CategorySidebar } from './category-sidebar';
 import { Button } from '@/components/ui/button';
+import { selectedUser } from '@/reducers/userSlice';
+import { useAppSelector } from '@/store/hooks';
+import Link from 'next/link';
 
 interface Props {
   disabled?: boolean;
@@ -13,6 +16,7 @@ interface Props {
 
 export const SearchInput = ({ disabled, data }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const user = useAppSelector(selectedUser);
   return (
     <div className="flex w-full items-center gap-2">
       <CategorySidebar
@@ -37,6 +41,14 @@ export const SearchInput = ({ disabled, data }: Props) => {
         <ListFilterIcon />
       </Button>
       {/* add librby btn */}
+      {user?.loginStatus && (
+        <Button variant="elevated" asChild>
+          <Link href="/library">
+            <BookmarkCheckIcon className="mr-2" />
+            Library
+          </Link>
+        </Button>
+      )}
     </div>
   );
 };
