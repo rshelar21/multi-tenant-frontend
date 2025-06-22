@@ -32,7 +32,7 @@ const NavbarItem = ({ children, href, isActive }: NavbarItemsProps) => {
         isActive && 'bg-black text-white hover:bg-black hover:text-white'
       )}
     >
-      <Link href={href}>{children}</Link>
+      <Link href={`/${href}`}>{children}</Link>
     </Button>
   );
 };

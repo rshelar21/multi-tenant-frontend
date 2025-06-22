@@ -7,6 +7,7 @@ export interface List {
     slug: string;
   }[];
 }
+
 export const categoriesList: List[] = [
   {
     name: 'All',
