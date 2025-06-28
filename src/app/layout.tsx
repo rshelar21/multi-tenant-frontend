@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
 import './globals.css';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 import ReduxProvider from '@/components/providers/ReduxProvider';
 import AuthProvider from '@/components/providers/AuthProvider';
@@ -23,12 +24,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${dmSans.className} antialiased`}>
-        <ReactQueryProvider>
-          <ReduxProvider>
-            <AuthProvider>{children}</AuthProvider>
-            <Toaster />
-          </ReduxProvider>
-        </ReactQueryProvider>
+        <NuqsAdapter>
+          <ReactQueryProvider>
+            <ReduxProvider>
+              <AuthProvider>{children}</AuthProvider>
+              <Toaster />
+            </ReduxProvider>
+          </ReactQueryProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

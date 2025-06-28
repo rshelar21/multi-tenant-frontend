@@ -5,20 +5,19 @@ import { List } from './filters.constant';
 interface Props {
   category: List;
   isOpen: boolean;
-  position: { top: number; left: number };
 }
 
-export const SubcategoryMenu = ({ category, isOpen, position }: Props) => {
+export const SubcategoryMenu = ({ category, isOpen }: Props) => {
   if (!isOpen || category?.subcategories?.length === 0) {
     return null;
   }
 
   return (
     <div
-      className="fixed z-100"
+      className="absolute z-100"
       style={{
-        top: position.top,
-        left: position.left,
+        top: "100%",
+        left: 0,
       }}
     >
       <div className="h-3 w-60" />
@@ -31,6 +30,7 @@ export const SubcategoryMenu = ({ category, isOpen, position }: Props) => {
         <div>
           {category?.subcategories?.map((item) => (
             <Link
+              prefetch
               href={`/${category.slug}/${item?.slug}`}
               key={item?.name}
               className="flex w-full items-center justify-between p-4 text-left font-medium underline hover:bg-black hover:text-white"
