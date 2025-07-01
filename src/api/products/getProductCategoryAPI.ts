@@ -1,17 +1,17 @@
 import { request } from '@/lib/axios';
-import { ErrorType, IMeta } from '@/types/utils';
-import { IProductTag } from '@/types/product';
+import { ErrorType } from '@/types/utils';
+import { ISubCategory } from '@/types/product';
 
 interface ServerResponse {
-  data: IProductTag[];
-  meta: IMeta;
+  data: ISubCategory[];
+  count: number;
 }
 
-export const getProductTagsAPI = async (url: string) => {
+export const getProductCategoryAPI = async () => {
   const { data, error } = await request({
     options: {
       method: 'GET',
-      url,
+      url: `/category/sub-category/all`,
     },
   });
 

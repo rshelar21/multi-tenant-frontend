@@ -9,6 +9,13 @@ interface IUserState {
   accessToken: string;
   id: string;
   loginStatus: boolean;
+  roles: {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    roleType: number;
+  }[];
 }
 
 const initialState: IUserState = {
@@ -18,6 +25,7 @@ const initialState: IUserState = {
   accessToken: '',
   id: '',
   loginStatus: false,
+  roles: [],
 };
 
 export const userSlice = createSlice({
@@ -31,6 +39,7 @@ export const userSlice = createSlice({
       state.username = action.payload.username;
       state.accessToken = action.payload.accessToken;
       state.loginStatus = action.payload.loginStatus;
+      state.roles = action.payload.roles;
     },
     removeUser: (state) => {
       state.name = '';

@@ -7,13 +7,25 @@ import { ProductCard, ProductSkeletonLoading } from './ProductCard';
 import { InboxIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_API_LIMIT } from '@/constants';
+import { useAppSelector } from '@/store/hooks';
+import { selectedUser } from '@/reducers/userSlice';
+import { cn } from '@/lib/utils';
 interface IProductsListProps {
   category?: string;
   subCategory?: string;
+  tenantSlug?: string;
+  narrowView?: boolean;
 }
 
-export const ProductsList = ({ category, subCategory }: IProductsListProps) => {
+export const ProductsList = ({
+  category,
+  subCategory,
+  tenantSlug,
+  narrowView,
+}: IProductsListProps) => {
   const [{ maxPrice, minPrice, tags }] = useProductFilters();
+  const { roles } = useAppSelector(selectedUser);
+  const isSuperAdmin = roles?.some((i) => i.roleType === 1);
 
   const {
     data,
@@ -23,7 +35,7 @@ export const ProductsList = ({ category, subCategory }: IProductsListProps) => {
     isFetchingNextPage,
     isFetching,
   } = useInfiniteQuery({
-    queryKey: ['products', category, maxPrice, minPrice, tags],
+    queryKey: ['products', category, maxPrice, minPrice, tags, tenantSlug],
     queryFn: async (pageParam) => {
       const url = generateUrl({
         path: '/products',
@@ -35,6 +47,8 @@ export const ProductsList = ({ category, subCategory }: IProductsListProps) => {
           tags,
           limit: DEFAULT_API_LIMIT,
           page: pageParam?.pageParam,
+          access: isSuperAdmin ? 'admin' : 'user',
+          tenantSlug: tenantSlug,
         },
       });
       return await getProductsAPI(url);
@@ -46,7 +60,12 @@ export const ProductsList = ({ category, subCategory }: IProductsListProps) => {
 
   if (isFetching) {
     return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div
+        className={cn(
+          `grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4`,
+          narrowView && 'lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3'
+        )}
+      >
         {Array.from({ length: 4 })?.map((_, index) => (
           <ProductSkeletonLoading key={index} />
         ))}
@@ -64,7 +83,12 @@ export const ProductsList = ({ category, subCategory }: IProductsListProps) => {
   }
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div
+        className={cn(
+          `grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4`,
+          narrowView && 'lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3'
+        )}
+      >
         {data?.pages
           ?.flatMap((pages) => pages?.data)
           .map((p) => (
@@ -75,8 +99,8 @@ export const ProductsList = ({ category, subCategory }: IProductsListProps) => {
               // price={p?.price}
               // productImg={''}
               {...p}
-              authorImgUrl={undefined}
-              authorUsername="rohan"
+              tenantImgUrl={p?.user?.tenant?.storeImg}
+              tenantSlug={p?.user?.tenant?.slug}
               reviewCount={5}
               reviewRating={3}
             />

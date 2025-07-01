@@ -7,11 +7,15 @@ import { ProductSkeletonLoading } from './ProductCard';
 interface IProductsListViewProps {
   category?: string;
   subCategory?: string;
+  tenantSlug?: string;
+  narrowView?: boolean;
 }
 
 export const ProductsListView = ({
   category,
   subCategory,
+  tenantSlug,
+  narrowView,
 }: IProductsListViewProps) => {
   return (
     <>
@@ -26,7 +30,12 @@ export const ProductsListView = ({
           </div>
           <div className="lg:col-span-4 xl:col-span-6">
             <Suspense fallback={<ProductSkeletonLoading />}>
-              <ProductsList category={category} subCategory={subCategory} />
+              <ProductsList
+                category={category}
+                subCategory={subCategory}
+                tenantSlug={tenantSlug}
+                narrowView={narrowView}
+              />
             </Suspense>
           </div>
         </div>

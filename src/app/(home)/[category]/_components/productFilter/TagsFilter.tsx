@@ -3,6 +3,7 @@ import { getProductTagsAPI } from '@/api/products';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LoaderIcon } from 'lucide-react';
+import { generateUrl } from '@/utils/generateUrl';
 
 interface Props {
   value: string[] | null;
@@ -13,7 +14,16 @@ export const TagsFilter = ({ onChange, value }: Props) => {
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['tags'],
-      queryFn: getProductTagsAPI,
+      queryFn: async (pageParam) => {
+        const url = generateUrl({
+          path: '/tags',
+          params: {
+            limit: 5,
+            page: pageParam?.pageParam,
+          },
+        });
+        return await getProductTagsAPI(url);
+      },
       initialPageParam: 1,
       getNextPageParam: (lastPage) =>
         lastPage.meta.hasNextPage ? lastPage.meta?.nextPage : undefined,

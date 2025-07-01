@@ -1,12 +1,15 @@
+'use client'
 import React from 'react';
 import { IProduct } from '@/types/product';
 import Link from 'next/link';
 import Image from 'next/image';
 import { StarIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { generateTenantURL } from '@/utils';
 
 interface Props extends IProduct {
-  authorUsername: string;
-  authorImgUrl?: string | null;
+  tenantSlug: string;
+  tenantImgUrl?: string | null;
   reviewRating?: number;
   reviewCount?: number;
 }
@@ -16,11 +19,20 @@ export const ProductCard = ({
   name,
   price,
   productImg,
-  authorImgUrl,
-  authorUsername,
+  tenantImgUrl,
+  tenantSlug,
   reviewCount,
   reviewRating,
 }: Props) => {
+  const router = useRouter();
+
+  const handleTenantRedirect = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    router.push(generateTenantURL(tenantSlug));
+  };
+
   return (
     <Link href={`/products/${id}`}>
       <div className="flex h-fit flex-col overflow-hidden rounded-md border bg-white transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -34,17 +46,21 @@ export const ProductCard = ({
         </div>
         <div className="flex flex-1 flex-col gap-3 border-y p-4">
           <h2 className="line-clamp-4 text-lg font-medium">{name}</h2>
-          <div className="flex items-center gap-2" onClick={() => {}}>
-            {authorImgUrl && (
+          <div
+            className="flex items-center gap-2"
+            onClick={handleTenantRedirect}
+          >
+            {tenantImgUrl && (
               <Image
-                src={authorImgUrl}
-                alt={authorUsername}
+                src={tenantImgUrl}
+                alt={tenantSlug}
                 width={16}
                 height={16}
                 className="size-[16px] shrink-0 rounded-full border"
               />
             )}
-            <p className="text-sm font-medium underline">{authorUsername}</p>
+
+            <p className="text-sm font-medium underline">{tenantSlug}</p>
           </div>
           {!!reviewCount && (
             <div className="flex items-center gap-1">

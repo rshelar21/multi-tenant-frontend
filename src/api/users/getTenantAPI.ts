@@ -1,17 +1,12 @@
 import { request } from '@/lib/axios';
-import { ErrorType, IMeta } from '@/types/utils';
-import { IProductTag } from '@/types/product';
+import { ErrorType } from '@/types/utils';
+import { ITenants } from '@/types/user';
 
-interface ServerResponse {
-  data: IProductTag[];
-  meta: IMeta;
-}
-
-export const getProductTagsAPI = async (url: string) => {
+export const getTenantAPI = async () => {
   const { data, error } = await request({
     options: {
       method: 'GET',
-      url,
+      url: `/tenants`,
     },
   });
 
@@ -23,5 +18,5 @@ export const getProductTagsAPI = async (url: string) => {
     throw new Error(errorMessage);
   }
 
-  return data as ServerResponse;
+  return data as ITenants;
 };

@@ -11,7 +11,7 @@ const PUBLIC_ROUTES = ['/sign-up', '/sign-in'];
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const [value] = useLocalStorage('redirect-url');
+  const [value] = useLocalStorage('redirect-url', '/sign-up');
   const user = useAppSelector(selectedUser);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
@@ -47,6 +47,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           name: data.user.name,
           username: data.user.username,
           loginStatus: true,
+          roles: data?.user?.roles
         })
       );
       setShowLoader(false); // show app content

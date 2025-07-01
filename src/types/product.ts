@@ -1,3 +1,4 @@
+import { IUser } from './user';
 import { ICommonResponse } from './utils';
 
 export interface ICategory extends ICommonResponse {
@@ -18,7 +19,8 @@ export interface IProduct extends ICommonResponse {
   price: string;
   productImg?: string;
   refundPolicy: string;
-  category: ISubCategory[];
+  category: ISubCategory;
+  user: IUser
 }
 
 export interface IProductTag extends ICommonResponse {
