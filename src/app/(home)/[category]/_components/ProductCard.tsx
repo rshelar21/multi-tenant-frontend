@@ -1,11 +1,11 @@
-'use client'
+'use client';
 import React from 'react';
 import { IProduct } from '@/types/product';
 import Link from 'next/link';
 import Image from 'next/image';
 import { StarIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { generateTenantURL } from '@/utils';
+import { formatCurrency, generateTenantURL } from '@/utils';
 
 interface Props extends IProduct {
   tenantSlug: string;
@@ -34,7 +34,7 @@ export const ProductCard = ({
   };
 
   return (
-    <Link href={`/products/${id}`}>
+    <Link href={`${generateTenantURL(tenantSlug)}/products/${id}`}>
       <div className="flex h-fit flex-col overflow-hidden rounded-md border bg-white transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="relative aspect-square">
           <Image
@@ -74,11 +74,7 @@ export const ProductCard = ({
         <div className="p-4">
           <div className="relative w-fit border bg-pink-400 px-2 py-1">
             <p className="text-sm font-medium">
-              {new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                maximumFractionDigits: 0,
-              }).format(Number(price))}
+              {formatCurrency(Number(price))}
             </p>
           </div>
         </div>

@@ -1,6 +1,6 @@
-import { RootState } from '@/store/store';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '@/store/store';
 
 interface IUserState {
   name: string;

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { generateTenantURL } from '@/utils';
+import { CheckoutButton } from './CheckoutButton';
 
 interface Props {
   slug: string;
@@ -33,6 +34,7 @@ export const Navbar = ({ slug }: Props) => {
           )}
           <p className="text-xl">{slug}</p>
         </Link>
+        <CheckoutButton tenantSlug={slug} hideIfEmpty />
       </div>
     </nav>
   );
