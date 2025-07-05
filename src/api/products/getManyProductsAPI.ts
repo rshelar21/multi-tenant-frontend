@@ -2,17 +2,11 @@ import { request } from '@/lib/axios';
 import { ErrorType } from '@/types/utils';
 import { IProduct } from '@/types/product';
 
-type Props = {
-  category: string;
-  tags: string[];
-} & Omit<IProduct, 'category' | 'id' | 'createDate' | 'updateDate' | 'user'>;
-
-export const postProductAPI = async (body: Props) => {
+export const getManyProductsAPI = async (url: string) => {
   const { data, error } = await request({
     options: {
-      method: 'POST',
-      url: `/products`,
-      data: body,
+      method: 'GET',
+      url,
     },
   });
 
@@ -23,6 +17,7 @@ export const postProductAPI = async (body: Props) => {
 
     throw new Error(errorMessage);
   }
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  return data;
+  return data as IProduct[];
 };

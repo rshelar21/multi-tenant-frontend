@@ -131,14 +131,21 @@ export const CreateProductsModal = ({ onClose, open }: Props) => {
     };
   }, [results]);
 
+  const handleClose = () => {
+    form.reset();
+    form.clearErrors();
+    onClose();
+  };
+
   const { mutate, isPending } = useMutation({
     mutationFn: postProductAPI,
     onError: (error) => {
       toast.error(`${error.message}`);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success('Product Created!');
-      queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+      await queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+      handleClose();
     },
   });
 
@@ -149,13 +156,8 @@ export const CreateProductsModal = ({ onClose, open }: Props) => {
       name: values?.name,
       price: values?.price,
       refundPolicy: values?.refundPolicy.value,
+      tags: values?.tags?.map((i) => i.value) || [],
     });
-  };
-
-  const handleClose = () => {
-    form.reset();
-    form.clearErrors();
-    onClose();
   };
 
   return (

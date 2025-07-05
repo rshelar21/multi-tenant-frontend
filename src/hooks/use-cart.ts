@@ -1,11 +1,17 @@
+import { useCallback } from 'react';
 import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { selectedTenantCart, addProduct, cleartCart, removeProduct } from '@/reducers/cartSlice';
+import {
+  selectedTenantCart,
+  addProduct,
+  cleartCart,
+  removeProduct,
+} from '@/reducers/cartSlice';
 
 export const useCart = (tenantSlug: string) => {
   const dispatch = useAppDispatch();
   const productIds = useAppSelector((s) => selectedTenantCart(s, tenantSlug));
 
-  const toggleProducts = (productId: string) => {
+  const toggleProducts = useCallback((productId: string) => {
     if (productIds?.includes(productId)) {
       dispatch(
         removeProduct({
@@ -21,19 +27,19 @@ export const useCart = (tenantSlug: string) => {
         })
       );
     }
-  };
+  }, []);
 
-  const isProductInCart = (productId: string) => {
+  const isProductInCart = useCallback((productId: string) => {
     return productIds?.includes(productId);
-  };
+  }, []);
 
-  const clearTenantCart = () => {
+  const clearTenantCart = useCallback(() => {
     dispatch(
       cleartCart({
         tenantSlug,
       })
     );
-  };
+  }, []);
 
   return {
     toggleProducts,
@@ -41,5 +47,6 @@ export const useCart = (tenantSlug: string) => {
     clearTenantCart,
     productIds,
     totalItems: productIds?.length,
+    // removeProduct: () => removeProduct()
   };
 };

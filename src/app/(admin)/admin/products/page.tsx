@@ -16,13 +16,13 @@ const Products = () => {
   const isSuperAdmin = roles?.some((i) => i.roleType === 1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-products', isSuperAdmin],
+    queryKey: ['admin-products'],
     queryFn: async () => {
       const url = generateUrl({
         path: '/products',
         params: {
           limit: 100,
-          access: isSuperAdmin ? 'admin' : 'user',
+          access: isSuperAdmin ? 'admin' : undefined,
         },
       });
       return await getProductsAPI(url);

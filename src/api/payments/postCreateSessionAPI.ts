@@ -1,17 +1,20 @@
 import { request } from '@/lib/axios';
 import { ErrorType } from '@/types/utils';
-import { IProduct } from '@/types/product';
 
-type Props = {
-  category: string;
-  tags: string[];
-} & Omit<IProduct, 'category' | 'id' | 'createDate' | 'updateDate' | 'user'>;
+interface Props {
+  tenantSlug: string;
+  productIds: string[];
+}
 
-export const postProductAPI = async (body: Props) => {
+interface ServerResponse {
+  url: string;
+}
+
+export const postCreateSessionAPI = async (body: Props) => {
   const { data, error } = await request({
     options: {
       method: 'POST',
-      url: `/products`,
+      url: `/payments/checkout`,
       data: body,
     },
   });
@@ -24,5 +27,5 @@ export const postProductAPI = async (body: Props) => {
     throw new Error(errorMessage);
   }
 
-  return data;
+  return data as ServerResponse;
 };

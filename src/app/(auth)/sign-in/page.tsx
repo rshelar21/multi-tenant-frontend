@@ -68,6 +68,7 @@ const SignInPage = () => {
           name: data?.user?.name,
           username: data?.user?.username,
           loginStatus: true,
+          roles: data?.user?.roles,
         })
       );
       router.push('/');

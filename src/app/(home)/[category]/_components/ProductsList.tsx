@@ -35,7 +35,15 @@ export const ProductsList = ({
     isFetchingNextPage,
     isFetching,
   } = useInfiniteQuery({
-    queryKey: ['products', category, maxPrice, minPrice, tags, tenantSlug],
+    queryKey: [
+      'products',
+      category,
+      maxPrice,
+      minPrice,
+      tags,
+      tenantSlug,
+      isSuperAdmin,
+    ],
     queryFn: async (pageParam) => {
       const url = generateUrl({
         path: '/products',
