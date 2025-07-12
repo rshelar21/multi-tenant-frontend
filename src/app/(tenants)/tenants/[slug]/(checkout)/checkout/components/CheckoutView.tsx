@@ -10,7 +10,8 @@ import { postCreateSessionAPI } from '@/api/payments';
 import { CheckoutSidebar } from './CheckoutSidebar';
 import { CheckoutItem } from './CheckoutItem';
 import { toast } from 'sonner';
-
+import { getQueryClient } from '@/lib/react-query';
+import { useRouter } from 'next/navigation';
 interface CheckoutViewProps {
   tenantSlug: string;
 }
@@ -18,6 +19,8 @@ interface CheckoutViewProps {
 export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
   const { productIds, toggleProducts, clearTenantCart } = useCart(tenantSlug);
   const [state, setStates] = useCheckoutSession();
+  const queryClient = getQueryClient();
+  const router = useRouter();
 
   const { data, isLoading } = useQuery({
     queryKey: ['many-products', productIds],
@@ -61,6 +64,8 @@ export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
         success: false,
       });
       clearTenantCart();
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
+      router.push('/library');
     }
   }, [clearTenantCart, state]);
 

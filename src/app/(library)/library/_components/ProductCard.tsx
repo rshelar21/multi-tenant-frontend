@@ -1,11 +1,9 @@
-'use client';
-import React, { useMemo } from 'react';
-import { IProduct } from '@/types/product';
+'use client'
+import { useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { StarIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { formatCurrency, generateTenantURL } from '@/utils';
+import { IProduct } from '@/types/product';
 
 interface Props extends IProduct {
   tenantSlug: string;
@@ -17,16 +15,13 @@ interface Props extends IProduct {
 export const ProductCard = ({
   id,
   name,
-  price,
   productImg,
   tenantImgUrl,
   tenantSlug,
   reviews,
 }: Props) => {
-  const router = useRouter();
-
   const reviewsDetails = useMemo(() => {
-    if (reviews.length) {
+    if (reviews?.length) {
       const avg = reviews?.reduce(
         (acc, items) => acc + Number(items.rating),
         0
@@ -43,15 +38,8 @@ export const ProductCard = ({
     };
   }, [reviews]);
 
-  const handleTenantRedirect = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    router.push(generateTenantURL(tenantSlug));
-  };
-
   return (
-    <Link prefetch href={`${generateTenantURL(tenantSlug)}/products/${id}`}>
+    <Link prefetch href={`/library/${id}`}>
       <div className="flex h-fit flex-col overflow-hidden rounded-md border bg-white transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="relative aspect-square">
           <Image
@@ -63,10 +51,7 @@ export const ProductCard = ({
         </div>
         <div className="flex flex-1 flex-col gap-3 border-y p-4">
           <h2 className="line-clamp-4 text-lg font-medium">{name}</h2>
-          <div
-            className="flex items-center gap-2"
-            onClick={handleTenantRedirect}
-          >
+          <div className="flex items-center gap-2">
             {tenantImgUrl && (
               <Image
                 src={tenantImgUrl}
@@ -87,14 +72,6 @@ export const ProductCard = ({
               </p>
             </div>
           )}
-          {reviewsDetails?.reviewCount === 0 && <div className="h-5"></div>}
-        </div>
-        <div className="p-4">
-          <div className="relative w-fit border bg-pink-400 px-2 py-1">
-            <p className="text-sm font-medium">
-              {formatCurrency(Number(price))}
-            </p>
-          </div>
         </div>
       </div>
     </Link>

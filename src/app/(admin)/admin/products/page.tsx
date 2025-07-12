@@ -16,7 +16,7 @@ const Products = () => {
   const isSuperAdmin = roles?.some((i) => i.roleType === 1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-products'],
+    queryKey: ['admin-products', isSuperAdmin],
     queryFn: async () => {
       const url = generateUrl({
         path: '/products',
@@ -50,6 +50,7 @@ const Products = () => {
       <CreateProductsModal
         open={isOpenModal}
         onClose={() => setIsOpenModal(false)}
+        isSuperAdmin={isSuperAdmin}
       />
     </div>
   );

@@ -1,15 +1,18 @@
 import { request } from '@/lib/axios';
-import { ErrorType } from '@/types/utils';
+import { ErrorType, IMeta } from '@/types/utils';
+import { Orders } from '@/types/orders';
 
-interface Response {
-  url: string
+
+interface ServerResponse {
+  data: Orders[];
+  meta: IMeta;
 }
 
-export const postLogoutAPI = async () => {
+export const getOrdersAPI = async (url: string) => {
   const { data, error } = await request({
     options: {
-      method: 'POST',
-      url: `/auth/logout`,
+      method: 'GET',
+      url,
     },
   });
 
@@ -21,5 +24,5 @@ export const postLogoutAPI = async () => {
     throw new Error(errorMessage);
   }
 
-  return data as Response;
+  return data as ServerResponse;
 };

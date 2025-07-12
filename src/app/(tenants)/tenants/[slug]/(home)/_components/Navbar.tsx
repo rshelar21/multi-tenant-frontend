@@ -14,8 +14,9 @@ interface Props {
 export const Navbar = ({ slug }: Props) => {
   const { data } = useQuery({
     queryKey: ['tenant'],
-    queryFn: getTenantAPI,
+    queryFn: () => getTenantAPI(slug),
   });
+
   return (
     <nav className="h-20 border-b bg-white font-medium">
       <div className="mx-auto flex h-full max-w-(--breakpoint-xl) items-center justify-between px-4 lg:px-12">

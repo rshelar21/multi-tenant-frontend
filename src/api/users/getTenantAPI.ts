@@ -2,11 +2,11 @@ import { request } from '@/lib/axios';
 import { ErrorType } from '@/types/utils';
 import { ITenants } from '@/types/user';
 
-export const getTenantAPI = async () => {
+export const getTenantAPI = async (slug: string) => {
   const { data, error } = await request({
     options: {
       method: 'GET',
-      url: `/tenants`,
+      url: `/tenants/slug/${slug}`,
     },
   });
 

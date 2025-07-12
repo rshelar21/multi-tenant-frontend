@@ -43,7 +43,7 @@ export const SearchInput = ({ disabled, data }: Props) => {
       {/* add librby btn */}
       {user?.loginStatus && (
         <Button variant="elevated" asChild>
-          <Link href="/library">
+          <Link href="/library" prefetch>
             <BookmarkCheckIcon className="mr-2" />
             Library
           </Link>

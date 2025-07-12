@@ -1,6 +1,6 @@
 import { IUser } from './user';
 import { ICommonResponse } from './utils';
-
+import { Reviews } from './reviews';
 export interface ICategory extends ICommonResponse {
   name: string;
   slug: string;
@@ -13,6 +13,8 @@ export interface ISubCategory extends ICommonResponse {
   category: ICategory[];
 }
 
+export type ReviewTypes = {} & Omit<Reviews, 'product' | 'user'>;
+
 export interface IProduct extends ICommonResponse {
   name: string;
   description: string;
@@ -20,7 +22,8 @@ export interface IProduct extends ICommonResponse {
   productImg?: string;
   refundPolicy: string;
   category: ISubCategory;
-  user: IUser
+  user: IUser;
+  reviews: ReviewTypes[];
 }
 
 export interface IProductTag extends ICommonResponse {

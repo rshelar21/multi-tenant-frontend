@@ -1,15 +1,11 @@
 import { request } from '@/lib/axios';
 import { ErrorType } from '@/types/utils';
 
-interface Response {
-  url: string
-}
-
-export const postLogoutAPI = async () => {
+export const postVerifyAccountAPI = async () => {
   const { data, error } = await request({
     options: {
       method: 'POST',
-      url: `/auth/logout`,
+      url: `/stripe/account-link`,
     },
   });
 
@@ -21,5 +17,5 @@ export const postLogoutAPI = async () => {
     throw new Error(errorMessage);
   }
 
-  return data as Response;
+  return data;
 };

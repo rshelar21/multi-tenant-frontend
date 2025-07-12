@@ -1,15 +1,18 @@
 import { request } from '@/lib/axios';
 import { ErrorType } from '@/types/utils';
 
-interface Response {
-  url: string
-}
+type Props = {
+  description: string;
+  rating: number;
+  productId: string;
+};
 
-export const postLogoutAPI = async () => {
+export const postReviewAPI = async (body: Props) => {
   const { data, error } = await request({
     options: {
       method: 'POST',
-      url: `/auth/logout`,
+      url: `/reviews`,
+      data: body,
     },
   });
 
@@ -21,5 +24,5 @@ export const postLogoutAPI = async () => {
     throw new Error(errorMessage);
   }
 
-  return data as Response;
+  return data;
 };

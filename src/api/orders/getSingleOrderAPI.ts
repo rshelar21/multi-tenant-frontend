@@ -1,15 +1,12 @@
 import { request } from '@/lib/axios';
 import { ErrorType } from '@/types/utils';
+import { Orders } from '@/types/orders';
 
-interface Response {
-  url: string
-}
-
-export const postLogoutAPI = async () => {
+export const getSingleOrderAPI = async (url: string) => {
   const { data, error } = await request({
     options: {
-      method: 'POST',
-      url: `/auth/logout`,
+      method: 'GET',
+      url,
     },
   });
 
@@ -20,6 +17,7 @@ export const postLogoutAPI = async () => {
 
     throw new Error(errorMessage);
   }
+  await new Promise((resolve) => setTimeout(resolve, 3000));
 
-  return data as Response;
+  return data as Orders;
 };

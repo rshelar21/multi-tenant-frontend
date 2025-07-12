@@ -37,6 +37,7 @@ import { getQueryClient } from '@/lib/react-query';
 interface Props {
   open: boolean;
   onClose: () => void;
+  isSuperAdmin: boolean;
 }
 
 const formSchema = z.object({
@@ -79,7 +80,7 @@ const queryConfigs = [
   { queryKey: ['category'], queryFn: getProductCategoryAPI },
 ];
 
-export const CreateProductsModal = ({ onClose, open }: Props) => {
+export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
   const results = useQueries({
     queries: queryConfigs,
   });
@@ -144,7 +145,10 @@ export const CreateProductsModal = ({ onClose, open }: Props) => {
     },
     onSuccess: async () => {
       toast.success('Product Created!');
-      await queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+      await queryClient.invalidateQueries({
+        queryKey: ['admin-products', isSuperAdmin],
+        refetchType: 'all',
+      });
       handleClose();
     },
   });
