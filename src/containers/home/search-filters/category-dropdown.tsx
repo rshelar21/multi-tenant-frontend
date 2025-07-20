@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { useState, useRef, JSX } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -48,7 +48,7 @@ export const CategoryDropdown = ({
         <Button
           variant="elevated"
           className={cn(
-            'hover:border-primary h-11 rounded-full border-transparent bg-transparent px-4 text-black hover:bg-white',
+            'hover:border-primary h-11 rounded-full border-transparent bg-transparent px-4 text-black hover:bg-white dark:text-white',
             isActive && !isNavigationHovered && 'border-primary bg-white',
             isOpen &&
               'border-primary -translate-x-[4px] -translate-y-[4px] bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all'

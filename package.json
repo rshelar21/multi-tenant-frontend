@@ -12,6 +12,8 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "@cloudinary/react": "^1.14.3",
+    "@cloudinary/url-gen": "^1.21.0",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-accordion": "^1.2.10",
     "@radix-ui/react-alert-dialog": "^1.1.13",
@@ -41,6 +43,7 @@
     "@radix-ui/react-tooltip": "^1.2.6",
     "@reduxjs/toolkit": "^2.8.2",
     "@tanstack/react-query": "^5.80.10",
+    "@tanstack/react-table": "^8.21.3",
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

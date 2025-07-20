@@ -3,3 +3,8 @@ export { TruncateText } from './TruncateText';
 export { CopyToClipboard } from './CopyToClipboard';
 export { ReactSelect } from './ReactSelect';
 export { StarPicker } from './StarPicker';
+export { ReactTable, TableCellWrapper } from './table';
+export { Footer } from './AppFooter';
+export { LogtoutButton } from './LogtoutButton';
+export { ImageUploader } from './ImageUploader';
+export { Loader } from './Loader';

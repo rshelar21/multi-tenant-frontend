@@ -12,6 +12,7 @@ import { CheckIcon, LinkIcon, StarIcon } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { AddToCartButton } from './AddToCartButton';
 import { toast } from 'sonner';
+import { Loader } from '@/components/common';
 
 interface Props {
   productId: string;
@@ -84,12 +85,16 @@ export const ProductView = ({ productId, tenantSlug }: Props) => {
   }, [data]);
 
   if (isLoading) {
-    return <h1>loading</h1>;
+    return (
+      <div className="flex justify-center px-4 py-10 lg:px-12">
+        <Loader />
+      </div>
+    );
   }
 
   return (
     <div className="px-4 py-10 lg:px-12">
-      <div className="overflow-hidden rounded-sm border bg-white">
+      <div className="dark:bg-input/30 overflow-hidden rounded-sm border bg-[#f4f4f0]">
         <div className="relative aspect-[3.9] border-b">
           <Image
             src={data?.productImg || '/placeholder.png'}

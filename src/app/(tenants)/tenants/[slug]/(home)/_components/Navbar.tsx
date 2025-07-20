@@ -18,7 +18,7 @@ export const Navbar = ({ slug }: Props) => {
   });
 
   return (
-    <nav className="h-20 border-b bg-white font-medium">
+    <nav className="h-20 border-b bg-white font-medium dark:bg-black">
       <div className="mx-auto flex h-full max-w-(--breakpoint-xl) items-center justify-between px-4 lg:px-12">
         <Link
           href={generateTenantURL(slug)}

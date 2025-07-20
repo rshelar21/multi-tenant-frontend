@@ -1,5 +1,6 @@
 'use client';
 import Select, { MultiValue, SingleValue } from 'react-select';
+import { useTheme } from 'next-themes';
 
 interface IOption {
   value: string;
@@ -42,6 +43,7 @@ export const ReactSelect = ({
   isRequired,
   onChange,
 }: ReactSelectProps) => {
+  const { theme } = useTheme();
   const handleOnChange = (
     e: MultiValue<string | IOption> | SingleValue<string | IOption>
   ) => {
@@ -66,8 +68,48 @@ export const ReactSelect = ({
         onChange={handleOnChange}
         value={value}
         required={isRequired}
-        // onInputChange={(e) => handleOnInputChange(e)}
-        // loadingMessage={loadingMessage } //Async: Text to display when loading options
+        styles={{
+          control: (provided, state) => ({
+            ...provided,
+            backgroundColor: theme === 'dark' ? '#171717' : 'white',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            ':focus-visible': {
+              color: 'rgb(0.708, 0, 0)',
+            },
+            height: '3rem',
+            borderRadius: '0.375rem',
+            borderColor: state.isFocused
+              ? 'rgba(142, 142, 142, 1)'
+              : theme === 'dark'
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'black',
+            boxShadow: state.isFocused
+              ? '0 0 0 1px rgba(142, 142, 142, 1)'
+              : 'none',
+            fontWeight: '500',
+            fontSize: '1rem',
+            transition: 'all 0.2s',
+          }),
+
+          option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isSelected
+              ? 'black'
+              : theme === 'dark'
+                ? '#171717'
+                : 'white',
+            ':active': {
+              color: 'white',
+              backgroundColor: 'black',
+            },
+          }),
+
+          singleValue: (provided) => ({
+            ...provided,
+            color: theme === 'dark' ? 'white' : 'black',
+          }),
+        }}
       />
     </>
   );

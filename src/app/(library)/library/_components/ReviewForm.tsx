@@ -59,7 +59,7 @@ export const ReviewForm = ({ productId, data }: ReviewFormProps) => {
         rating: data?.rating,
       });
     }
-  }, [data]);
+  }, [data, form]);
 
   const { mutate, isPending } = useMutation({
     mutationFn: postReviewAPI,

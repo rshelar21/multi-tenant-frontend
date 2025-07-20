@@ -11,7 +11,7 @@ export const getProductCategoryAPI = async () => {
   const { data, error } = await request({
     options: {
       method: 'GET',
-      url: `/category/sub-category/all`,
+      url: `/category/sub-category/all?limit=100`,
     },
   });
 

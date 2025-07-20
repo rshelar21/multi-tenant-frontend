@@ -5,13 +5,12 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { getMeAPI } from '@/api/users';
 import { useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Loader } from '../common';
 
 const PUBLIC_ROUTES = ['/sign-up', '/sign-in'];
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const [value] = useLocalStorage('redirect-url', '/sign-up');
   const user = useAppSelector(selectedUser);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
@@ -23,7 +22,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data, status, refetch, isSuccess, isError } = useQuery({
     queryKey: ['me'],
     queryFn: getMeAPI,
-    // enabled: false,
+    enabled: false,
     retry: false,
   });
 
@@ -41,13 +40,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (isSuccess && data && !user.loginStatus) {
       dispatch(
         createUser({
-          accessToken: data.accessToken,
-          email: data.user.email,
-          id: data.user.id,
-          name: data.user.name,
-          username: data.user.username,
+          accessToken: data?.accessToken,
+          email: data?.user?.email,
+          id: data?.user?.id,
+          name: data?.user?.name,
+          username: data?.user?.username,
           loginStatus: true,
-          roles: data?.user?.roles
+          roles: data?.user?.roles,
+          tenant: data?.user?.tenant,
         })
       );
       setShowLoader(false); // show app content
@@ -57,13 +57,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // 3. If validation fails on protected route, redirect to sign-up
   useEffect(() => {
     if (isError && isProtectedRoute && !user.loginStatus) {
-      if (value) {
-        router.push(`${value}`);
-      } else {
-        router.push('/sign-up');
-      }
+      // if (value) {
+      //   router.push(`${value}`);
+      // } else {
+      // }
+
+      router.replace('/sign-in');
     }
-  }, [isError, value, isProtectedRoute, user.loginStatus, router]);
+  }, [isError, isProtectedRoute, user.loginStatus, router]);
 
   // 4. If logged-in user visits public route, redirect to home
   useEffect(() => {
@@ -82,7 +83,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     showLoader ||
     (!user.loginStatus && isProtectedRoute && status === 'pending')
   ) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   return <div>{children}</div>;

@@ -14,7 +14,7 @@ export interface ITenants {
   slug: string;
   stripeAccountId: string;
   stripeDetailsSubmitted: boolean;
-  storeImg: string | null
+  storeImg: string | null;
 }
 export interface IUser {
   name: string;
@@ -22,5 +22,5 @@ export interface IUser {
   username: string;
   id: string;
   roles: IUserRoles[];
-  tenant: ITenants
+  tenant: ITenants;
 }

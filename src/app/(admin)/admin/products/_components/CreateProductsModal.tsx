@@ -31,8 +31,10 @@ import {
   getProductCategoryAPI,
   postProductAPI,
 } from '@/api/products';
-import { refundPolicyList } from '@/constants';
 import { getQueryClient } from '@/lib/react-query';
+import { refundPolicyList } from '@/constants';
+import { ImageUploader } from '@/components/common';
+import { ImageUpload } from '@/services';
 
 interface Props {
   open: boolean;
@@ -71,6 +73,7 @@ const formSchema = z.object({
     .refine((val) => !!val.label && !!val.value, {
       message: 'Policy is required',
     }),
+  productImg: z.instanceof(File),
 });
 
 type formSchemaType = z.infer<typeof formSchema>;
@@ -100,12 +103,10 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
         label: '',
         value: '',
       },
+      productImg: undefined,
     },
-    mode: 'all',
+    // mode: 'all',
   });
-
-  // const isLoading = results[0].isLoading || results[1].isLoading;
-  // const isError = results[0].isError || results[1].isError;
 
   const options = useMemo(() => {
     const tagsList = results[0].data;
@@ -132,7 +133,7 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
     };
   }, [results]);
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     form.reset();
     form.clearErrors();
     onClose();
@@ -154,6 +155,8 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
   });
 
   const onSubmit = async (values: formSchemaType): Promise<void> => {
+    const res = await ImageUpload(values.productImg);
+
     mutate({
       category: values?.category?.value,
       description: values?.description,
@@ -161,134 +164,165 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
       price: values?.price,
       refundPolicy: values?.refundPolicy.value,
       tags: values?.tags?.map((i) => i.value) || [],
+      productImg: res?.secure_url,
     });
   };
 
   return (
     <Dialog open={open}>
-      <DialogContent hideClose>
+      <DialogContent
+        hideClose
+        className="max-h-[90vh] overflow-y-auto sm:max-w-2xl"
+      >
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">
             Create Product
           </DialogTitle>
-          {/* <DialogDescription>Add new product</DialogDescription> */}
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-2"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base">Product Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid w-full grid-cols-1 gap-4 pb-4 md:grid-cols-2">
+              <div className="space-y-2 col-span-2 md:col-span-1">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">Product Name</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base">Product Price</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="number" />
-                  </FormControl>
+              <div className="space-y-2 col-span-2 md:col-span-1">
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">Product Price</FormLabel>
+                      <FormControl>
+                        <Input {...field} type="number" />
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field: { name, onChange, value } }) => (
-                <FormItem>
-                  <FormLabel className="text-base">Select Category</FormLabel>
-                  <FormControl>
-                    <ReactSelect
-                      name={name}
-                      isSearchable
-                      options={options?.categoryList}
-                      onChange={onChange}
-                      value={value}
-                    />
-                  </FormControl>
+              <div className="space-y-2 col-span-2 md:col-span-1">
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field: { name, onChange, value } }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Select Category
+                      </FormLabel>
+                      <FormControl>
+                        <ReactSelect
+                          name={name}
+                          isSearchable
+                          options={options?.categoryList}
+                          onChange={onChange}
+                          value={value}
+                          // className="dark:bg-input/30"
+                        />
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <FormField
-              control={form.control}
-              name="tags"
-              render={({ field: { name, onChange, value } }) => (
-                <FormItem>
-                  <FormLabel className="text-base">Select Tags</FormLabel>
-                  <FormControl>
-                    <ReactSelect
-                      isMultiSelect
-                      name={name}
-                      isSearchable
-                      options={options?.tagsList}
-                      onChange={onChange}
-                      value={value}
-                    />
-                  </FormControl>
+              <div className="space-y-2 col-span-2 md:col-span-1">
+                <FormField
+                  control={form.control}
+                  name="refundPolicy"
+                  render={({ field: { name, onChange, value } }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Select Refund Policy
+                      </FormLabel>
+                      <FormControl>
+                        <ReactSelect
+                          name={name}
+                          isSearchable
+                          options={refundPolicyList}
+                          onChange={onChange}
+                          value={value}
+                        />
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <FormField
-              control={form.control}
-              name="refundPolicy"
-              render={({ field: { name, onChange, value } }) => (
-                <FormItem>
-                  <FormLabel className="text-base">
-                    Select Refund Policy
-                  </FormLabel>
-                  <FormControl>
-                    <ReactSelect
-                      name={name}
-                      isSearchable
-                      options={refundPolicyList}
-                      onChange={onChange}
-                      value={value}
-                    />
-                  </FormControl>
+              <div className="col-span-2 space-y-2">
+                <FormField
+                  control={form.control}
+                  name="tags"
+                  render={({ field: { name, onChange, value } }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">Select Tags</FormLabel>
+                      <FormControl>
+                        <ReactSelect
+                          isMultiSelect
+                          name={name}
+                          isSearchable
+                          options={options?.tagsList}
+                          onChange={onChange}
+                          value={value}
+                        />
+                      </FormControl>
 
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="col-span-2 space-y-2">
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-base">
+                        Product Description
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea {...field} className="resize-none" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-base">
-                    Product Description
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea {...field} className="resize-none" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <div className="col-span-2 space-y-2">
+                <FormField
+                  control={form.control}
+                  name="productImg"
+                  render={({ field: { value, onChange } }) => (
+                    <FormItem>
+                      <FormControl>
+                        <ImageUploader value={value} onChange={onChange} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
 
             <DialogFooter>
               <DialogClose asChild>

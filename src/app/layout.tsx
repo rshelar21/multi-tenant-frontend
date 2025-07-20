@@ -6,6 +6,7 @@ import ReactQueryProvider from '@/components/providers/ReactQueryProvider';
 import ReduxProvider from '@/components/providers/ReduxProvider';
 import AuthProvider from '@/components/providers/AuthProvider';
 import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/components/providers/ThemProvider';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -24,14 +25,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${dmSans.className} antialiased`}>
-        <NuqsAdapter>
-          <ReactQueryProvider>
-            <ReduxProvider>
-              <AuthProvider>{children}</AuthProvider>
-              <Toaster />
-            </ReduxProvider>
-          </ReactQueryProvider>
-        </NuqsAdapter>
+        <ThemeProvider
+          defaultTheme="light"
+          attribute="class"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="funroad-theme"
+        >
+          <NuqsAdapter>
+            <ReactQueryProvider>
+              <ReduxProvider>
+                <AuthProvider>{children}</AuthProvider>
+                <Toaster />
+              </ReduxProvider>
+            </ReactQueryProvider>
+          </NuqsAdapter>
+        </ThemeProvider>
       </body>
     </html>
   );

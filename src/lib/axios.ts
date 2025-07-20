@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
     // if (err.response.status === 401 && !originalRequest._retry) {
     //   originalRequest._retry = true;
     //   try {
-    //     const data = request({
+    //     const data = await request({
     //       options: {
     //         url: `auth/refresh`,
     //       },

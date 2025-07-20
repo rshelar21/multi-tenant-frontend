@@ -11,7 +11,7 @@ export const ProductSort = () => {
       <Button
         size="sm"
         className={cn(
-          'rounded-full bg-white hover:bg-white',
+          'rounded-full bg-card hover:bg-white',
 
           filters.sort !== 'curated' &&
             'hover:border-border border-transparent bg-transparent hover:bg-transparent'

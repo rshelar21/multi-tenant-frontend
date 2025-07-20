@@ -1,83 +1,116 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { TruncateText, CopyToClipboard } from '@/components/common';
-import { IProduct } from '@/types/product';
+import { useMemo } from 'react';
 import * as dateFns from 'date-fns';
-import { Skeleton } from '@/components/ui/skeleton';
+import { createColumnHelper } from '@tanstack/react-table';
+import {
+  TruncateText,
+  CopyToClipboard,
+  ReactTable,
+  TableCellWrapper,
+} from '@/components/common';
+import { IProduct } from '@/types/product';
+import { IMeta } from '@/types/utils';
 
 interface IProductsTableProps {
   data: IProduct[];
   isLoading: boolean;
+  isSuperAdmin: boolean;
+  stripeDetailsSubmitted: boolean;
+  meta: IMeta | undefined;
 }
 
-const ProductsTableSkeleton = () => {
-  return [...new Array(5)].map((i, index) => (
-    <TableRow className="last:border-0" key={index}>
-      <TableCell>
-        <Skeleton className="h-6" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-6" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-6" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-6" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-6" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-6" />
-      </TableCell>
-      <TableCell>
-        <Skeleton className="h-6" />
-      </TableCell>
-    </TableRow>
-  ));
-};
+export const ProductsTable = ({
+  data,
+  isLoading,
+  isSuperAdmin,
+  stripeDetailsSubmitted,
+  meta,
+}: IProductsTableProps) => {
+  const columns = useMemo(() => {
+    const columnHelper = createColumnHelper<{
+      id: string;
+      name: string;
+      description: string;
+      price: string;
+      refundPolicy: string;
+      createDate: string;
+      category: { name: string };
+    }>();
 
-export const ProductsTable = ({ data, isLoading }: IProductsTableProps) => {
+    return [
+      columnHelper.accessor((row) => row.id, {
+        id: 'id',
+        header: 'Product ID',
+        cell: (info) => (
+          <TableCellWrapper>
+            <TruncateText text={info.getValue()} />
+            <CopyToClipboard text={info.getValue()} />
+          </TableCellWrapper>
+        ),
+        size: 100,
+        footer: (props) => props.column.id,
+      }),
+      columnHelper.accessor((row) => row.name, {
+        id: 'name',
+        header: 'Name',
+        cell: (info) => <TableCellWrapper>{info.getValue()}</TableCellWrapper>,
+        size: 200,
+        footer: (props) => props.column.id,
+      }),
+      columnHelper.accessor((row) => row.description, {
+        id: 'description',
+        header: 'Description',
+        cell: (info) => <TableCellWrapper>{info.getValue()}</TableCellWrapper>,
+        size: 200,
+        footer: (props) => props.column.id,
+      }),
+      columnHelper.accessor((row) => row.price, {
+        id: 'price',
+        header: 'Price',
+        cell: (info) => <TableCellWrapper>{info.getValue()}</TableCellWrapper>,
+        size: 200,
+        footer: (props) => props.column.id,
+      }),
+      columnHelper.accessor((row) => row.refundPolicy, {
+        id: 'refundPolicy',
+        header: 'Refund Policy',
+        cell: (info) => <TableCellWrapper>{info.getValue()}</TableCellWrapper>,
+        size: 200,
+        footer: (props) => props.column.id,
+      }),
+      columnHelper.accessor((row) => row.category.name, {
+        id: 'category',
+        header: 'Category',
+        cell: (info) => <TableCellWrapper>{info.getValue()}</TableCellWrapper>,
+        size: 200,
+        footer: (props) => props.column.id,
+      }),
+      columnHelper.accessor((row) => row.createDate, {
+        id: 'createDate',
+        header: 'Created At',
+        cell: (info) => (
+          <TableCellWrapper>
+            {dateFns.format(info.getValue(), 'MM/dd/yyyy')}
+          </TableCellWrapper>
+        ),
+        size: 200,
+        footer: (props) => props.column.id,
+      }),
+    ];
+  }, []);
+
   return (
-    <Table className="rounded-lg border border-gray-200">
-      <TableHeader className="bg-gray-200">
-        <TableRow>
-          <TableHead>Product ID</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Price</TableHead>
-          <TableHead>Refund Policy</TableHead>
-          <TableHead>Category</TableHead>
-          <TableHead>Created At</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody className="rounded-lg">
-        {isLoading && <ProductsTableSkeleton />}
-        {!isLoading &&
-          data?.map((product) => (
-            <TableRow key={product?.id}>
-              <TableCell>
-                <TruncateText text={product?.id} />
-                <CopyToClipboard text={product?.id} />
-              </TableCell>
-              <TableCell>{product?.name}</TableCell>
-              <TableCell>{product?.description}</TableCell>
-              <TableCell>{product?.price}</TableCell>
-              <TableCell>{product?.refundPolicy}</TableCell>
-              <TableCell>{product?.category?.name}</TableCell>
-              <TableCell>
-                {dateFns.format(product?.createDate, 'MM/dd/yyyy')}
-              </TableCell>
-            </TableRow>
-          ))}
-      </TableBody>
-    </Table>
+    <div>
+      <ReactTable
+        data={data}
+        isLoading={isLoading}
+        columns={columns}
+        isWarningMsg={
+          !isSuperAdmin && !stripeDetailsSubmitted
+            ? 'To create your products, first verify your account'
+            : ''
+        }
+        meta={meta}
+      />
+    </div>
   );
 };

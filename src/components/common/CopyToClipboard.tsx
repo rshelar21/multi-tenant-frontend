@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { Clipboard, ClipboardCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 interface Props {
   text: string;
+  className?: string;
 }
 
-export const CopyToClipboard = ({ text }: Props) => {
+export const CopyToClipboard = ({ text, className }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -21,7 +23,7 @@ export const CopyToClipboard = ({ text }: Props) => {
   return (
     <Button
       variant="outline"
-      className="m-0 border-transparent p-0"
+      className={cn('m-0 border-transparent p-0', className)}
       onClick={handleCopy}
       title="Copy"
     >

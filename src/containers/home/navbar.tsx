@@ -4,16 +4,12 @@ import { Poppins } from 'next/font/google';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { NavbarSidebar } from './navbar-sidebar';
 import { MenuIcon } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppSelector } from '@/store/hooks';
 import { selectedUser } from '@/reducers/userSlice';
-import { useMutation } from '@tanstack/react-query';
-import { postLogoutAPI } from '@/api/auth';
-import { toast } from 'sonner';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { removeUser } from '@/reducers/userSlice';
+import { LogtoutButton } from '@/components/common';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -43,38 +39,20 @@ const NavbarItem = ({ children, href, isActive }: NavbarItemsProps) => {
 
 const navbarItems = [
   { href: '/', children: 'Home' },
-  { href: '/about', children: 'About' },
-  { href: '/features', children: 'Features' },
-  { href: '/pricing', children: 'Pricing' },
-  { href: '/contact', children: 'Contact' },
+  // { href: '/about', children: 'About' },
+  { href: '/settings', children: 'Settings' },
+  // { href: '/features', children: 'Features' },
+  // { href: '/pricing', children: 'Pricing' },
+  // { href: '/contact', children: 'Contact' },
 ];
 
 export const Navbar = () => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = useAppSelector(selectedUser);
-  const router = useRouter();
-  // eslint-disable-next-line  @typescript-eslint/no-unused-vars
-  const [_, setValue] = useLocalStorage('redirect-url', '');
-  const dispatch = useAppDispatch();
-
-  const { mutate, isPending } = useMutation({
-    mutationKey: ['logout'],
-    mutationFn: postLogoutAPI,
-    onSuccess: () => {
-      dispatch(removeUser());
-      setValue('/sign-in');
-      toast.success('logout done');
-      router.push('/sign-in');
-    },
-  });
-
-  const handleLogout = () => {
-    mutate();
-  };
 
   return (
-    <nav className="flex h-20 justify-between border-b bg-white font-medium">
+    <nav className="flex h-20 justify-between border-b bg-white font-medium dark:bg-black">
       <Link href="/" className="flex items-center pl-6">
         <span className={cn('text-5xl font-semibold', poppins.className)}>
           funroad
@@ -84,6 +62,7 @@ export const Navbar = () => {
         open={isSidebarOpen}
         items={navbarItems}
         onOpenChange={setIsSidebarOpen}
+        isLogined={user?.loginStatus}
       />
 
       <div className="hidden items-center gap-4 lg:flex">
@@ -100,19 +79,12 @@ export const Navbar = () => {
       {user?.loginStatus ? (
         <div className="hidden lg:flex">
           <Button
-            disabled={isPending}
-            variant="secondary"
-            className="h-full rounded-none border-t-0 border-r-0 border-b-0 border-l bg-white px-12 text-lg transition-colors hover:bg-pink-400"
-            onClick={() => handleLogout()}
-          >
-            Log Out
-          </Button>
-          <Button
             asChild
-            className="h-full rounded-none border-t-0 border-r-0 border-b-0 border-l bg-black px-12 text-lg text-white transition-colors hover:bg-pink-400 hover:text-black"
+            className="h-full rounded-none border-t-0 border-r-0 border-b-0 border-l bg-black px-12 text-lg text-white transition-colors hover:bg-pink-400 hover:text-black dark:hover:bg-pink-400"
           >
             <Link href="/admin">Dashboard</Link>
           </Button>
+          <LogtoutButton />
         </div>
       ) : (
         <div className="hidden lg:flex">

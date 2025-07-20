@@ -66,9 +66,10 @@ const SignInPage = () => {
           email: data?.user?.email,
           id: data?.user?.id,
           name: data?.user?.name,
-          username: data?.user?.username,
+          username: data?.user?.tenant?.name,
           loginStatus: true,
           roles: data?.user?.roles,
+          tenant: data?.user?.tenant,
         })
       );
       router.push('/');
@@ -81,7 +82,7 @@ const SignInPage = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5">
-      <div className="h-screen w-full overflow-y-auto bg-[#F4F4F0] lg:col-span-3">
+      <div className="h-screen w-full overflow-y-auto bg-[#F4F4F0] lg:col-span-3 dark:bg-black">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}

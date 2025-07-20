@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/store/store';
-
+import { ITenants } from '@/types/user';
+import { UserRolesIdType } from '@/constants';
 interface IUserState {
   name: string;
   email: string;
@@ -16,6 +17,7 @@ interface IUserState {
     updatedAt: string;
     roleType: number;
   }[];
+  tenant: ITenants | null;
 }
 
 const initialState: IUserState = {
@@ -26,6 +28,7 @@ const initialState: IUserState = {
   id: '',
   loginStatus: false,
   roles: [],
+  tenant: {} as ITenants,
 };
 
 export const userSlice = createSlice({
@@ -40,6 +43,7 @@ export const userSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.loginStatus = action.payload.loginStatus;
       state.roles = action.payload.roles;
+      state.tenant = action.payload.tenant;
     },
     removeUser: (state) => {
       state.name = '';
@@ -48,6 +52,8 @@ export const userSlice = createSlice({
       state.username = '';
       state.accessToken = '';
       state.loginStatus = false;
+      state.roles = [];
+      state.tenant = null;
     },
     updateAccessToken: (state, action) => {
       state.accessToken = action.payload.accessToken;
@@ -58,5 +64,8 @@ export const userSlice = createSlice({
 export const { createUser, removeUser, updateAccessToken } = userSlice.actions;
 
 export const selectedUser = (state: RootState) => state.user;
+
+export const isSuperAdmin = (state: RootState) =>
+  state.user?.roles?.some((i) => i.roleType === UserRolesIdType.SUPER_ADMIN);
 
 export default userSlice.reducer;

@@ -65,7 +65,7 @@ export const ProductFilters = () => {
   };
 
   return (
-    <div className="rounded-md border bg-white">
+    <div className="rounded-md border bg-card">
       <div className="flex items-center justify-between border-b p-4">
         <p className="font-medium">Filters</p>
         {hasFilters && (

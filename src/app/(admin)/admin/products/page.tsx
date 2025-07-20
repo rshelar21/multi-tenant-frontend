@@ -7,22 +7,25 @@ import { getProductsAPI } from '@/api/products';
 import { Plus } from 'lucide-react';
 import { CreateProductsModal, ProductsTable } from './_components';
 import { useAppSelector } from '@/store/hooks';
-import { selectedUser } from '@/reducers/userSlice';
 import { generateUrl } from '@/utils/generateUrl';
+import { selectedUser, isSuperAdmin } from '@/reducers/userSlice';
+import { usePagination } from '@/hooks/use-pagination';
 
-const Products = () => {
+const AdminProductsPage = () => {
+  const user = useAppSelector(selectedUser);
+  const isUserSuperAdmin = useAppSelector(isSuperAdmin);
+  const [{ page }] = usePagination();
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const { roles } = useAppSelector(selectedUser);
-  const isSuperAdmin = roles?.some((i) => i.roleType === 1);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['admin-products', isSuperAdmin],
+    queryKey: ['admin-products', isUserSuperAdmin],
     queryFn: async () => {
       const url = generateUrl({
         path: '/products',
         params: {
-          limit: 100,
-          access: isSuperAdmin ? 'admin' : undefined,
+          limit: 12,
+          access: isUserSuperAdmin ? 'admin' : undefined,
+          page: page,
         },
       });
       return await getProductsAPI(url);
@@ -30,7 +33,7 @@ const Products = () => {
   });
 
   return (
-    <div>
+    <div className="pb-8">
       <PageHeading
         title="Products"
         subTitle="List of products"
@@ -39,21 +42,32 @@ const Products = () => {
             variant="default"
             size="sm"
             onClick={() => setIsOpenModal(true)}
+            disabled={
+              isUserSuperAdmin
+                ? false
+                : !Boolean(user?.tenant?.stripeDetailsSubmitted)
+            }
           >
             <Plus />
             Add Product
           </Button>
         }
       />
-      <ProductsTable data={data?.data || []} isLoading={isLoading} />
+      <ProductsTable
+        data={data?.data || []}
+        isLoading={isLoading}
+        isSuperAdmin={isUserSuperAdmin}
+        stripeDetailsSubmitted={user?.tenant?.stripeDetailsSubmitted || false}
+        meta={data?.meta || undefined}
+      />
 
       <CreateProductsModal
         open={isOpenModal}
         onClose={() => setIsOpenModal(false)}
-        isSuperAdmin={isSuperAdmin}
+        isSuperAdmin={isUserSuperAdmin}
       />
     </div>
   );
 };
 
-export default Products;
+export default AdminProductsPage;
