@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import { getProductsAPI } from '@/api/products';
 import { ProductsListView } from '@/app/(home)/[category]/_components/ProductsListView';
 import { getQueryClient } from '@/lib/react-query';

@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 import React from 'react';
 import { getSingleProductAPI } from '@/api/products';
 import { getQueryClient } from '@/lib/react-query';
@@ -20,7 +19,7 @@ const ProductPage = async ({
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <ProductView productId={productId} tenantSlug={slug} />
+      <ProductView productId={productId} tenantSlug={slug}/>
     </HydrationBoundary>
   );
 };
