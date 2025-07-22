@@ -41,8 +41,9 @@ const AdminPage = () => {
           </div>
         </div>
       )}
-
-      <AdminDashboard isSuperAdmin={isUserSuperAdmin} />
+      {(user?.tenant?.stripeDetailsSubmitted || isUserSuperAdmin) && (
+        <AdminDashboard isSuperAdmin={isUserSuperAdmin} />
+      )}
     </div>
   );
 };
