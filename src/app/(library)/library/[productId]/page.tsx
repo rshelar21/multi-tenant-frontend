@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getQueryClient } from '@/lib/react-query';
 import { getSingleProductAPI } from '@/api/products';

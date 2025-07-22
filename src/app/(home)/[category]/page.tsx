@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { getProductsAPI } from '@/api/products';
 import { getQueryClient } from '@/lib/react-query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
@@ -9,14 +10,14 @@ const CategoryPage = async ({
   params: Promise<{ category: string }>;
 }) => {
   const { category } = await params;
-    const queryClient = getQueryClient();
-    await queryClient.prefetchInfiniteQuery({
-      queryKey: ['products', category],
-      queryFn: async () =>
-        await getProductsAPI(`products?parentSlug=${category}`),
-      initialPageParam: 1,
-    });
-    const dehydratedState = dehydrate(queryClient);
+  const queryClient = getQueryClient();
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ['products', category],
+    queryFn: async () =>
+      await getProductsAPI(`products?parentSlug=${category}`),
+    initialPageParam: 1,
+  });
+  const dehydratedState = dehydrate(queryClient);
 
   return (
     <HydrationBoundary state={dehydratedState}>

@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import React from 'react';
 import { CheckoutView } from './components/CheckoutView';
 
@@ -9,7 +10,7 @@ const CheckoutPage = async ({
   const { slug } = await params;
   return (
     <div>
-      <CheckoutView tenantSlug={slug}/>
+      <CheckoutView tenantSlug={slug} />
     </div>
   );
 };
