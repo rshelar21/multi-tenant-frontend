@@ -9,6 +9,7 @@ import { usePagination } from '@/hooks/use-pagination';
 
 const AdminCategoryPage = () => {
   const [{ page }] = usePagination();
+
   const { data, isLoading } = useQuery({
     queryKey: ['admin-category', page],
     queryFn: async () => {

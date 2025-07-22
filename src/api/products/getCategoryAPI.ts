@@ -4,7 +4,7 @@ import { ISubCategory } from '@/types/product';
 
 interface ServerResponse {
   data: ISubCategory[];
- meta: IMeta;
+  meta: IMeta;
 }
 
 export const getCategoryAPI = async (url: string) => {
@@ -23,5 +23,5 @@ export const getCategoryAPI = async (url: string) => {
     throw new Error(errorMessage);
   }
 
-  return data as ServerResponse
+  return data as ServerResponse;
 };

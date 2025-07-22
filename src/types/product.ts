@@ -1,6 +1,7 @@
 import { IUser } from './user';
 import { ICommonResponse } from './utils';
 import { Reviews } from './reviews';
+
 export interface ICategory extends ICommonResponse {
   name: string;
   slug: string;
@@ -10,7 +11,7 @@ export interface ICategory extends ICommonResponse {
 export interface ISubCategory extends ICommonResponse {
   name: string;
   slug: string;
-  category: ICategory[];
+  category: ICategory;
 }
 
 export type ReviewTypes = {} & Omit<Reviews, 'product' | 'user'>;

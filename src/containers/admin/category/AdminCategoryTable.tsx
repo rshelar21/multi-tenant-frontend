@@ -57,7 +57,7 @@ export const AdminCategoryTable = ({
         size: 200,
         footer: (props) => props.column.id,
       }),
-      columnHelper.accessor((row) => row.category.name, {
+      columnHelper.accessor((row) => row.category?.name, {
         id: 'category.name',
         header: 'Parent Category',
         cell: (info) => <TableCellWrapper>{info.getValue()}</TableCellWrapper>,

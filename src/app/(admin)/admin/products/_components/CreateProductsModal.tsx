@@ -182,7 +182,7 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <div className="grid w-full grid-cols-1 gap-4 pb-4 md:grid-cols-2">
-              <div className="space-y-2 col-span-2 md:col-span-1">
+              <div className="col-span-2 space-y-2 md:col-span-1">
                 <FormField
                   control={form.control}
                   name="name"
@@ -199,7 +199,7 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
                 />
               </div>
 
-              <div className="space-y-2 col-span-2 md:col-span-1">
+              <div className="col-span-2 space-y-2 md:col-span-1">
                 <FormField
                   control={form.control}
                   name="price"
@@ -216,7 +216,7 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
                 />
               </div>
 
-              <div className="space-y-2 col-span-2 md:col-span-1">
+              <div className="col-span-2 space-y-2 md:col-span-1">
                 <FormField
                   control={form.control}
                   name="category"
@@ -242,7 +242,7 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
                 />
               </div>
 
-              <div className="space-y-2 col-span-2 md:col-span-1">
+              <div className="col-span-2 space-y-2 md:col-span-1">
                 <FormField
                   control={form.control}
                   name="refundPolicy"
@@ -312,10 +312,10 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
                 <FormField
                   control={form.control}
                   name="productImg"
-                  render={({ field: { value, onChange } }) => (
+                  render={({ field: { onChange } }) => (
                     <FormItem>
                       <FormControl>
-                        <ImageUploader value={value} onChange={onChange} />
+                        <ImageUploader onChange={onChange} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
