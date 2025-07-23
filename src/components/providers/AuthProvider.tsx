@@ -22,7 +22,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data, status, refetch, isSuccess, isError } = useQuery({
     queryKey: ['me'],
     queryFn: getMeAPI,
-    // enabled: false,
+    enabled: !user.loginStatus,
     retry: false,
   });
 
@@ -61,7 +61,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       //   router.push(`${value}`);
       // } else {
       // }
-
       router.replace('/sign-in');
     }
   }, [isError, isProtectedRoute, user.loginStatus, router]);

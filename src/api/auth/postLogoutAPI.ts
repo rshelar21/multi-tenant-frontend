@@ -2,7 +2,7 @@ import { request } from '@/lib/axios';
 import { ErrorType } from '@/types/utils';
 
 interface Response {
-  url: string
+  url: string;
 }
 
 export const postLogoutAPI = async () => {
