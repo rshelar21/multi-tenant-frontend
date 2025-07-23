@@ -39,7 +39,7 @@ export const NavbarSidebar = ({
         <ScrollArea className="flex h-full flex-col overflow-y-auto pb-2">
           {items.map((item) => (
             <Link
-              href={`/${item?.href}`}
+              href={`${item?.href}`}
               key={item.href}
               className="flex w-full items-center p-4 text-left text-base font-medium hover:bg-black hover:text-white"
               onClick={() => onOpenChange(false)}
