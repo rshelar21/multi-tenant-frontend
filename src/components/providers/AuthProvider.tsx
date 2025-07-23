@@ -22,7 +22,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data, status, refetch, isSuccess, isError } = useQuery({
     queryKey: ['me'],
     queryFn: getMeAPI,
-    enabled: false,
+    // enabled: false,
     retry: false,
   });
 
