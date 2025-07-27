@@ -1,6 +1,7 @@
-'use client';
+'use client';;
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import {
   Sheet,
   SheetHeader,
@@ -9,8 +10,6 @@ import {
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { List } from './filters.constant';
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
-
 interface Props {
   open: boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
@@ -24,7 +23,7 @@ export const CategorySidebar = ({ open, onOpenChange, data }: Props) => {
 
   const currentCatgories = parentCategories ?? data ?? [];
 
-  const selectedBgColor = selectedCategory?.color || 'white';
+  // const selectedBgColor = selectedCategory?.color || 'white';
 
   const handleOpenChange = (open: boolean) => {
     setParentCategories(null);
@@ -57,11 +56,7 @@ export const CategorySidebar = ({ open, onOpenChange, data }: Props) => {
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent
-        side="left"
-        className="p-0 transition-none"
-        style={{ backgroundColor: selectedBgColor }}
-      >
+      <SheetContent side="left" className="p-0 transition-none">
         <SheetHeader className="border-b p-4">
           <SheetTitle>Categories</SheetTitle>
         </SheetHeader>

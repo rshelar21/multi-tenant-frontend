@@ -23,7 +23,7 @@ export const ProductsList = ({
   tenantSlug,
   narrowView,
 }: IProductsListProps) => {
-  const [{ maxPrice, minPrice, tags }] = useProductFilters();
+  const [{ maxPrice, minPrice, tags, search }] = useProductFilters();
   const { roles } = useAppSelector(selectedUser);
   const isSuperAdmin = roles?.some((i) => i.roleType === 1);
 
@@ -43,6 +43,7 @@ export const ProductsList = ({
       tags,
       tenantSlug,
       isSuperAdmin,
+      search,
     ],
     queryFn: async (pageParam) => {
       const url = generateUrl({
@@ -57,6 +58,7 @@ export const ProductsList = ({
           page: pageParam?.pageParam,
           access: isSuperAdmin ? 'admin' : 'user',
           tenantSlug: tenantSlug,
+          q: search,
         },
       });
       return await getProductsAPI(url);

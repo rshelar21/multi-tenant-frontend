@@ -25,5 +25,10 @@ export const useProductFilters = () => {
       })
       .withDefault([]),
     sort: parseAsStringLiteral(sortValues).withDefault('curated'),
+    search: parseAsString
+      .withOptions({
+        clearOnDefault: true,
+      })
+      .withDefault(''),
   });
 };

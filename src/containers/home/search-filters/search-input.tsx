@@ -1,22 +1,32 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { BookmarkCheckIcon, ListFilterIcon, SearchIcon } from 'lucide-react';
-import { useState } from 'react';
 import { List } from './filters.constant';
 import { CategorySidebar } from './category-sidebar';
 import { Button } from '@/components/ui/button';
 import { selectedUser } from '@/reducers/userSlice';
 import { useAppSelector } from '@/store/hooks';
 import Link from 'next/link';
+import { useProductFilters } from '@/hooks/use-product-filters';
+import { useDebounce } from '@/hooks/use-debounce';
 
 interface Props {
-  disabled?: boolean;
   data: List[];
 }
 
-export const SearchInput = ({ disabled, data }: Props) => {
+export const SearchInput = ({ data }: Props) => {
+  // eslint-disable-next-line  @typescript-eslint/no-unused-vars
+  const [_, setUpdateSearch] = useProductFilters();
+  const [searchText, setSearchText] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const user = useAppSelector(selectedUser);
+  const debouncedSearch = useDebounce(searchText, 200);
+
+  useEffect(() => {
+    setUpdateSearch({ search: debouncedSearch });
+  }, [debouncedSearch]);
+
   return (
     <div className="flex w-full items-center gap-2">
       <CategorySidebar
@@ -29,7 +39,8 @@ export const SearchInput = ({ disabled, data }: Props) => {
         <Input
           className="pl-8"
           placeholder="Search Products"
-          disabled={disabled}
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
         />
       </div>
 
