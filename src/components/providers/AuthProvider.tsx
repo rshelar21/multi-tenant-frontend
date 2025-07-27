@@ -48,6 +48,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           loginStatus: true,
           roles: data?.user?.roles,
           tenant: data?.user?.tenant,
+          createdAt: data?.user?.createdAt,
+          updatedAt: data?.user?.updatedAt,
         })
       );
       setShowLoader(false); // show app content

@@ -1,39 +1,52 @@
 'use client';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useTheme } from 'next-themes';
+import * as dateFns from 'date-fns';
+import {
+  Mail,
+  Package,
+  ShoppingCart,
+  TrendingUp,
+  User,
+  Moon,
+  Sun,
+} from 'lucide-react';
 import { selectedUser } from '@/reducers/userSlice';
 import { useAppSelector } from '@/store/hooks';
-import { CopyToClipboard, PageHeading } from '@/components/common';
-import { Mail, Package, ShoppingCart, TrendingUp, User } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Moon, Sun } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useTheme } from 'next-themes';
-import Link from 'next/link';
+import { CopyToClipboard, PageHeading } from '@/components/common';
+import { UpdateUserPasswordModal } from './UpdateUserPasswordModal';
+import { useState } from 'react';
 
 export const UserSettings = () => {
-  const user = useAppSelector(selectedUser);
   const { setTheme } = useTheme();
+  const user = useAppSelector(selectedUser);
+  const [isOpen, setIsOpen] = useState(false);
 
   function capitalize(value: string) {
     return value[0]?.toUpperCase() + value?.slice(1);
   }
+
   return (
     <div className="">
       <PageHeading
         title="User Settings"
         subTitle="Manage your account settings and preferences"
+        className="px-4 md:px-0"
       />
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-7">
-        <Card className="col-span-5 w-full rounded-lg border-gray-400 shadow">
+      <div className="grid grid-cols-1 gap-4 px-4 md:grid-cols-7 md:px-0">
+        <Card className="col-span-7 w-full rounded-lg border-gray-400 shadow md:col-span-5">
           <CardHeader>
             <PageHeading
               title={
@@ -148,14 +161,17 @@ export const UserSettings = () => {
           </CardContent>
         </Card>
 
-        <div className="col-span-2 flex w-full flex-col gap-4">
+        <div className="col-span-7 flex w-full flex-col gap-4 md:col-span-2">
           <Card className="w-full rounded-lg border-gray-400 shadow">
             <CardHeader>
               <p className="text-base text-gray-500">Account Overview</p>
 
               <div className="flex items-center justify-between">
                 <p className="black font-medium">Member since</p>
-                <p className="black font-medium">Jan 2024</p>
+                <p className="black font-medium">
+                  {user.createdAt &&
+                    dateFns.format(user.createdAt, 'MMMM yyyy')}
+                </p>
               </div>
 
               <div className="flex items-center justify-between">
@@ -175,9 +191,9 @@ export const UserSettings = () => {
                     <DropdownMenuItem onClick={() => setTheme('dark')}>
                       Dark
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTheme('system')}>
+                    {/* <DropdownMenuItem onClick={() => setTheme('system')}>
                       System
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -188,14 +204,18 @@ export const UserSettings = () => {
             <CardHeader>
               <p className="text-base text-gray-500">Security</p>
 
-              <Button variant="elevated" className="m-2">
+              <Button
+                variant="elevated"
+                className="m-2"
+                onClick={() => setIsOpen(true)}
+              >
                 Change Password
               </Button>
             </CardHeader>
           </Card>
         </div>
 
-        <Card className="col-span-7 w-full rounded-lg border-gray-400 shadow">
+        <Card className="col-span-7 hidden w-full rounded-lg border-gray-400 shadow">
           <CardHeader>
             <PageHeading
               title={
@@ -259,12 +279,16 @@ export const UserSettings = () => {
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild>
-                <Link href="/library" prefetch>View All Orders</Link>
+                <Link href="/library" prefetch>
+                  View All Orders
+                </Link>
               </Button>
             </div>
           </CardContent>
         </Card>
       </div>
+
+      <UpdateUserPasswordModal open={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 };

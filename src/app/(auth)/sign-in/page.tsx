@@ -1,10 +1,14 @@
 'use client';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { zodResolver } from '@hookform/resolvers/zod';
-import z from 'zod';
+import { useState } from 'react';
 import { Poppins } from 'next/font/google';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { Eye, EyeOff } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,8 +20,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { cn } from '@/lib/utils';
-import { useRouter } from 'next/navigation';
-import { useMutation } from '@tanstack/react-query';
 import { useAppDispatch } from '@/store/hooks';
 import { createUser } from '@/reducers/userSlice';
 import { postLoginUserAPI } from '@/api/auth';
@@ -45,6 +47,7 @@ type formSchemaType = z.infer<typeof formSchema>;
 const SignInPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [showPassword, setShowPassword] = useState(false);
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,6 +73,8 @@ const SignInPage = () => {
           loginStatus: true,
           roles: data?.user?.roles,
           tenant: data?.user?.tenant,
+          createdAt: data?.user?.createdAt,
+          updatedAt: data?.user?.updatedAt,
         })
       );
       router.push('/');
@@ -128,7 +133,23 @@ const SignInPage = () => {
                 <FormItem>
                   <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" />
+                    <div className="flex items-center justify-between gap-2">
+                      <Input
+                        {...field}
+                        type={showPassword ? 'text' : 'password'}
+                      />
+                      {showPassword ? (
+                        <EyeOff
+                          className="size-6 cursor-pointer"
+                          onClick={() => setShowPassword(false)}
+                        />
+                      ) : (
+                        <Eye
+                          className="size-6 cursor-pointer"
+                          onClick={() => setShowPassword(true)}
+                        />
+                      )}
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

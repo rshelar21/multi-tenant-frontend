@@ -18,6 +18,8 @@ interface IUserState {
     roleType: number;
   }[];
   tenant: ITenants | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const initialState: IUserState = {
@@ -29,6 +31,8 @@ const initialState: IUserState = {
   loginStatus: false,
   roles: [],
   tenant: {} as ITenants,
+  createdAt: '',
+  updatedAt: '',
 };
 
 export const userSlice = createSlice({
@@ -44,6 +48,8 @@ export const userSlice = createSlice({
       state.loginStatus = action.payload.loginStatus;
       state.roles = action.payload.roles;
       state.tenant = action.payload.tenant;
+      state.createdAt = action.payload.createdAt;
+      state.updatedAt = action.payload.updatedAt;
     },
     removeUser: (state) => {
       state.name = '';
@@ -54,6 +60,8 @@ export const userSlice = createSlice({
       state.loginStatus = false;
       state.roles = [];
       state.tenant = null;
+      state.createdAt = '';
+      state.updatedAt = '';
     },
     updateAccessToken: (state, action) => {
       state.accessToken = action.payload.accessToken;

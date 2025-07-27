@@ -23,4 +23,6 @@ export interface IUser {
   id: string;
   roles: IUserRoles[];
   tenant: ITenants;
+  createdAt: string;
+  updatedAt: string;
 }

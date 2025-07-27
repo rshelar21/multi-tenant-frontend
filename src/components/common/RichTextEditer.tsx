@@ -1,4 +1,5 @@
 'use client';
+import { useTheme } from 'next-themes';
 import { useCreateBlockNote } from '@blocknote/react';
 import { BlockNoteView } from '@blocknote/shadcn';
 import '@blocknote/core/fonts/inter.css';
@@ -16,6 +17,7 @@ export const RichTextEditer = ({
   initialContent: any;
   isEditable: boolean;
 }) => {
+  const { theme } = useTheme();
   const editor = useCreateBlockNote({
     initialContent: initialContent?.length
       ? (initialContent as PartialBlock[])
@@ -30,6 +32,8 @@ export const RichTextEditer = ({
       }}
       data-testid="blocknote-editor"
       editable={isEditable}
+      theme={theme as 'light' | 'dark'}
+      className="rounded-md border border-gray-400 dark:border-gray-800"
     />
   );
 };

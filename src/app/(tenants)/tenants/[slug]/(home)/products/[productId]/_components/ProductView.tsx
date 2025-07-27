@@ -219,7 +219,7 @@ export const ProductView = ({ productId, tenantSlug }: Props) => {
                 <div className="flex items-center justify-between">
                   <h3 className="text-xl font-medium">Ratings</h3>
                   <div className="flex items-center gap-x-1 font-medium">
-                    <StarIcon className="size-4 fill-black" />
+                    <StarIcon className="size-4 fill-black dark:fill-white" />
                     <p>({reviewsData?.reviewRating})</p>
                     <p className="text-base">
                       {reviewsData?.reviewCount} ratings

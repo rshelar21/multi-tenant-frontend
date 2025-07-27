@@ -19,6 +19,7 @@ export const StarRatings = ({
   text,
 }: StarRatingsProps) => {
   const safeRating = Math.max(MIN_RATING, Math.min(MAX_RATING, rating));
+
   return (
     <div className={cn(`flex items-center gap-x-1`, className)}>
       {Array.from({ length: MAX_RATING }).map((_, index) => (
@@ -26,7 +27,7 @@ export const StarRatings = ({
           key={index}
           className={cn(
             `size-4`,
-            (index ) < safeRating ? 'fill-black' : '',
+            index < safeRating ? 'fill-black dark:fill-white' : '',
             iconClassName
           )}
         />
