@@ -1,10 +1,10 @@
 import { getOrdersAPI } from '@/api/orders';
-import { getQueryClient } from '@/lib/react-query';
+import { createServerQueryClient } from '@/lib/react-server-query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { LibraryView } from './_components/LibraryView';
 
 const LibraryPage = async () => {
-  const queryClient = getQueryClient();
+  const queryClient = createServerQueryClient();
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['orders'],
     queryFn: async () => await getOrdersAPI(`orders`),

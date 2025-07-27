@@ -2,6 +2,10 @@ import { IUser } from './user';
 import { ICommonResponse } from './utils';
 import { Reviews } from './reviews';
 
+export interface Tags extends ICommonResponse {
+  name: string;
+}
+
 export interface ICategory extends ICommonResponse {
   name: string;
   slug: string;
@@ -15,7 +19,14 @@ export interface ISubCategory extends ICommonResponse {
 }
 
 export type ReviewTypes = {} & Omit<Reviews, 'product' | 'user'>;
-
+export interface Content {
+  id: string;
+  children: [];
+  content: [];
+  type: string;
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  props: {};
+}
 export interface IProduct extends ICommonResponse {
   name: string;
   description: string;
@@ -25,6 +36,8 @@ export interface IProduct extends ICommonResponse {
   category: ISubCategory;
   user: IUser;
   reviews: ReviewTypes[];
+  tags: Tags[];
+  content: Content[];
 }
 
 export interface IProductTag extends ICommonResponse {

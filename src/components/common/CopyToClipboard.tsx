@@ -23,7 +23,7 @@ export const CopyToClipboard = ({ text, className }: Props) => {
   return (
     <Button
       variant="outline"
-      className={cn('m-0 border-transparent p-0', className)}
+      className={cn('m-0 border-0 bg-transparent p-0 outline-0', className)}
       onClick={handleCopy}
       title="Copy"
     >

@@ -1,6 +1,7 @@
 import React from 'react';
-import { getReviewsAPI } from '@/api/reviews';
 import { useQuery } from '@tanstack/react-query';
+import { getReviewsAPI } from '@/api/reviews';
+import { Loader } from '@/components/common';
 import { ReviewForm } from './ReviewForm';
 
 interface ReviewSidebarProps {
@@ -8,13 +9,13 @@ interface ReviewSidebarProps {
 }
 
 export const ReviewSidebar = ({ productId }: ReviewSidebarProps) => {
-  const { data, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['reviews', productId],
     queryFn: async () => await getReviewsAPI(`/reviews?productId=${productId}`),
   });
 
-  if (isFetching) {
-    return <h1>loading</h1>;
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { useQueries } from '@tanstack/react-query';
 import {
   DollarSign,
   LucideProps,
@@ -13,11 +7,81 @@ import {
   ShoppingCart,
   Users,
 } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { getAnalyticsDataAPI, getRevenueAPI } from '@/api/analytics';
-import { useQueries } from '@tanstack/react-query';
 import { formatCurrency } from '@/utils';
+
+const LoadingIndicator = () => {
+  return (
+    <div className="space-y-8">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {[...new Array(3)].map((i) => (
+          <Card className="relative overflow-hidden" key={i}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Skeleton className="h-4 w-[150px] bg-gray-200 dark:bg-gray-50" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                <Skeleton className="h-4 w-full bg-gray-200 dark:bg-gray-50" />
+              </div>
+
+              <p className="text-muted-foreground mt-1 text-xs">
+                <Skeleton className="h-4 w-full bg-gray-200 dark:bg-gray-50" />
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+        {/* Recent Orders */}
+        <Card className="col-span-4">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Recent Orders</CardTitle>
+                <CardDescription>
+                  Latest customer orders and their status
+                </CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <Skeleton className="h-12 w-full bg-gray-200 dark:bg-gray-50" />
+              <Skeleton className="h-12 w-full bg-gray-200 dark:bg-gray-50" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Top Products */}
+        <Card className="col-span-3">
+          <CardHeader>
+            <CardTitle>Top Products</CardTitle>
+            <CardDescription>
+              Best performing products this month
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <Skeleton className="h-12 w-full bg-gray-200 dark:bg-gray-50" />
+              <Skeleton className="h-12 w-full bg-gray-200 dark:bg-gray-50" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
 
 const StatsCard = ({
   title,
@@ -63,9 +127,13 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
     ],
   });
 
-  // const isLoading = results[0].isLoading || results[1].isLoading;
+  const isLoading = results[0].isLoading || results[1].isLoading;
   const data = results[0]?.data;
   const revenue = results[1]?.data;
+
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <div className="space-y-8">

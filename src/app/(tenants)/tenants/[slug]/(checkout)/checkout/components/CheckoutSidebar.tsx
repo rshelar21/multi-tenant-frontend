@@ -17,7 +17,7 @@ export const CheckoutSidebar = ({
   totalPrice,
 }: CheckoutSidebarProps) => {
   return (
-    <div className="flex flex-col overflow-hidden rounded-md border bg-white">
+    <div className="dark:bg-input/30 flex flex-col overflow-hidden rounded-md border bg-white">
       <div className="flex items-center justify-between border-b p-4">
         <h4 className="text-lg font-medium">Total</h4>
         <p className="text-lg font-medium">{formatCurrency(totalPrice)}</p>

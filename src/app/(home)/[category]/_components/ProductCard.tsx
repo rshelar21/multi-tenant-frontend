@@ -52,7 +52,7 @@ export const ProductCard = ({
 
   return (
     <Link prefetch href={`${generateTenantURL(tenantSlug)}/products/${id}`}>
-      <div className="flex h-fit flex-col overflow-hidden rounded-md border bg-card transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div className="bg-card flex h-fit flex-col overflow-hidden rounded-md border transition-shadow hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
         <div className="relative aspect-square">
           <Image
             alt={name}
@@ -103,6 +103,6 @@ export const ProductCard = ({
 
 export const ProductSkeletonLoading = () => {
   return (
-    <div className="aspect-3/4 w-full animate-pulse rounded-lg bg-neutral-200"></div>
+    <div className="dark:bg-input/30 aspect-3/4 w-full animate-pulse rounded-lg bg-neutral-200"></div>
   );
 };

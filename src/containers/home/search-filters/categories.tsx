@@ -54,6 +54,7 @@ export const Categories = () => {
 
     const resizeObserver = new ResizeObserver(calcVisible);
     resizeObserver.observe(containerRef.current!);
+    // eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [categoriesList.length]);
 
   return (

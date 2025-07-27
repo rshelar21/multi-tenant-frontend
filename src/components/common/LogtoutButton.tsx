@@ -1,13 +1,12 @@
 'use client';
 import { toast } from 'sonner';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { postLogoutAPI } from '@/api/auth';
 import { Button } from '@/components/ui/button';
 import { removeUser } from '@/reducers/userSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { cn } from '@/lib/utils';
-import { getQueryClient } from '@/lib/react-query';
 import { LucideProps } from 'lucide-react';
 
 interface LogtoutButtonProps {
@@ -32,7 +31,7 @@ export const LogtoutButton = ({
 }: LogtoutButtonProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const queryClient = getQueryClient();
+  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
     mutationKey: ['logout'],

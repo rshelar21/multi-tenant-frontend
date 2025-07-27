@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '../ui/button';
 import { FormLabel, FormMessage } from '../ui/form';
 import { Trash, Upload } from 'lucide-react';
@@ -7,15 +7,23 @@ import Image from 'next/image';
 
 interface ImageUploaderProps {
   onChange: (e: File | null) => void;
+  value: File | string;
 }
 
 const fileSizeLimit = 3 * 1024 * 1024; // 3Mb
 
-export const ImageUploader = ({ onChange }: ImageUploaderProps) => {
+export const ImageUploader = ({ onChange, value }: ImageUploaderProps) => {
+  // eslint-disable-next-line  @typescript-eslint/no-unused-vars
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (typeof value === 'string') {
+      setPreview(value);
+    }
+  }, [value]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError('');
@@ -74,7 +82,7 @@ export const ImageUploader = ({ onChange }: ImageUploaderProps) => {
           </label>
         </div>
       )}
-      {image && preview && (
+      {value && preview && (
         <div className="relative h-48 w-full overflow-hidden rounded-lg transition-all">
           <Image alt={preview} fill src={preview} className="object-cover" />
 

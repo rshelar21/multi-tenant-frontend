@@ -28,7 +28,8 @@ interface ReactTableProps<T> {
   isLoading: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[];
-  data: T[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any[];
   isWarningMsg?: string;
   meta?: IMeta | undefined;
 }
@@ -101,7 +102,7 @@ export const ReactTable = <T,>({
             {getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="h-12">
+                  <TableHead key={header.id} className="h-12 text-center">
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
@@ -131,7 +132,7 @@ export const ReactTable = <T,>({
             {getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="px-5">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

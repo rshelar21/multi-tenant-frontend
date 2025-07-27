@@ -109,6 +109,14 @@ export const ReactSelect = ({
             ...provided,
             color: theme === 'dark' ? 'white' : 'black',
           }),
+          multiValue: (provided) => ({
+            ...provided,
+            background: theme === 'dark' ? '#5e5b5b' : '#e3e1e1',
+          }),
+          multiValueLabel: (provided) => ({
+            ...provided,
+            color: theme === 'dark' ? 'white' : 'black',
+          }),
         }}
       />
     </>

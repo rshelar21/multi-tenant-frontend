@@ -1,8 +1,7 @@
-import React from 'react';
 import { getSingleProductAPI } from '@/api/products';
-import { getQueryClient } from '@/lib/react-query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { ProductView } from './_components/ProductView';
+import { createServerQueryClient } from '@/lib/react-server-query';
 
 const ProductPage = async ({
   params,
@@ -10,7 +9,7 @@ const ProductPage = async ({
   params: Promise<{ productId: string; slug: string }>;
 }) => {
   const { productId, slug } = await params;
-  const queryClient = getQueryClient();
+  const queryClient = createServerQueryClient();
   await queryClient.prefetchQuery({
     queryKey: ['products', productId],
     queryFn: async () => await getSingleProductAPI(productId),
@@ -19,7 +18,7 @@ const ProductPage = async ({
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <ProductView productId={productId} tenantSlug={slug}/>
+      <ProductView productId={productId} tenantSlug={slug} />
     </HydrationBoundary>
   );
 };

@@ -11,27 +11,33 @@ export const useCart = (tenantSlug: string) => {
   const dispatch = useAppDispatch();
   const productIds = useAppSelector((s) => selectedTenantCart(s, tenantSlug));
 
-  const toggleProducts = useCallback((productId: string) => {
-    if (productIds?.includes(productId)) {
-      dispatch(
-        removeProduct({
-          productId,
-          tenantSlug,
-        })
-      );
-    } else {
-      dispatch(
-        addProduct({
-          tenantSlug,
-          productId,
-        })
-      );
-    }
-  }, []);
+  const toggleProducts = useCallback(
+    (productId: string) => {
+      if (productIds?.includes(productId)) {
+        dispatch(
+          removeProduct({
+            productId,
+            tenantSlug,
+          })
+        );
+      } else {
+        dispatch(
+          addProduct({
+            tenantSlug,
+            productId,
+          })
+        );
+      }
+    },
+    [dispatch, productIds, tenantSlug]
+  );
 
-  const isProductInCart = useCallback((productId: string) => {
-    return productIds?.includes(productId);
-  }, []);
+  const isProductInCart = useCallback(
+    (productId: string) => {
+      return productIds?.includes(productId);
+    },
+    [productIds]
+  );
 
   const clearTenantCart = useCallback(() => {
     dispatch(
@@ -39,7 +45,7 @@ export const useCart = (tenantSlug: string) => {
         tenantSlug,
       })
     );
-  }, []);
+  }, [dispatch, tenantSlug]);
 
   return {
     toggleProducts,

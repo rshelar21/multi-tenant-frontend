@@ -1,5 +1,5 @@
 'use client';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,22 +24,24 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 
 import { Input } from '@/components/ui/input';
-import { useMutation, useQueries } from '@tanstack/react-query';
+import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query';
 import { ReactSelect } from '@/components/common';
 import {
   getProductTagsAPI,
   getProductCategoryAPI,
   postProductAPI,
+  updateProductAPI,
 } from '@/api/products';
-import { getQueryClient } from '@/lib/react-query';
 import { refundPolicyList } from '@/constants';
 import { ImageUploader } from '@/components/common';
 import { ImageUpload } from '@/services';
+import { IProduct } from '@/types/product';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   isSuperAdmin: boolean;
+  data: Partial<IProduct> | null;
 }
 
 const formSchema = z.object({
@@ -73,7 +75,8 @@ const formSchema = z.object({
     .refine((val) => !!val.label && !!val.value, {
       message: 'Policy is required',
     }),
-  productImg: z.instanceof(File),
+  // productImg: z.instanceof(File),
+  productImg: z.union([z.instanceof(File), z.string().url()]),
 });
 
 type formSchemaType = z.infer<typeof formSchema>;
@@ -83,11 +86,16 @@ const queryConfigs = [
   { queryKey: ['category'], queryFn: getProductCategoryAPI },
 ];
 
-export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
+export const CreateProductsModal = ({
+  onClose,
+  open,
+  isSuperAdmin,
+  data,
+}: Props) => {
   const results = useQueries({
     queries: queryConfigs,
   });
-  const queryClient = getQueryClient();
+  const queryClient = useQueryClient();
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -107,6 +115,29 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
     },
     // mode: 'all',
   });
+
+  useEffect(() => {
+    if (data?.id) {
+      form.reset({
+        category: {
+          value: data?.category?.id,
+          label: data?.category?.name,
+        },
+        description: data?.description,
+        name: data?.name,
+        price: data?.price,
+        refundPolicy: {
+          label: data?.refundPolicy,
+          value: data?.refundPolicy,
+        },
+        productImg: data?.productImg || '',
+        tags: data?.tags?.map((i) => ({
+          label: i?.name,
+          value: i?.id,
+        })),
+      });
+    }
+  }, [data, form]);
 
   const options = useMemo(() => {
     const tagsList = results[0].data;
@@ -141,9 +172,6 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: postProductAPI,
-    onError: (error) => {
-      toast.error(`${error.message}`);
-    },
     onSuccess: async () => {
       toast.success('Product Created!');
       await queryClient.invalidateQueries({
@@ -152,20 +180,53 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
       });
       handleClose();
     },
+    onError: (err) => {
+      toast.error(err.message || 'Something went wrong!');
+    },
+  });
+
+  const { mutate: updateMutate, isPending: isUpading } = useMutation({
+    mutationKey: ['product-update'],
+    mutationFn: updateProductAPI,
+    onSuccess: () => {
+      toast.success('Product Updated!');
+      queryClient.invalidateQueries({
+        queryKey: ['admin-products', isSuperAdmin],
+      });
+      handleClose();
+    },
+    onError: (err) => {
+      toast.error(err.message || 'Something went wrong!');
+    },
   });
 
   const onSubmit = async (values: formSchemaType): Promise<void> => {
-    const res = await ImageUpload(values.productImg);
-
-    mutate({
+    const body = {
       category: values?.category?.value,
       description: values?.description,
       name: values?.name,
       price: values?.price,
       refundPolicy: values?.refundPolicy.value,
       tags: values?.tags?.map((i) => i.value) || [],
-      productImg: res?.secure_url,
-    });
+      productImg: '',
+    };
+    if (typeof values.productImg !== 'string') {
+      const res = await ImageUpload(values?.productImg as File);
+      body.productImg = res.secure_url;
+    } else {
+      body.productImg = values.productImg;
+    }
+
+    if (data?.id) {
+      updateMutate({
+        id: data?.id,
+        body,
+      });
+    } else {
+      mutate({
+        ...body,
+      });
+    }
   };
 
   return (
@@ -312,10 +373,10 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
                 <FormField
                   control={form.control}
                   name="productImg"
-                  render={({ field: { onChange } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <FormItem>
                       <FormControl>
-                        <ImageUploader onChange={onChange} />
+                        <ImageUploader onChange={onChange} value={value} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -329,7 +390,7 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
                 <Button
                   variant="outline"
                   size="sm"
-                  disabled={isPending}
+                  disabled={isPending || isUpading}
                   onClick={handleClose}
                 >
                   Cancel
@@ -338,7 +399,7 @@ export const CreateProductsModal = ({ onClose, open, isSuperAdmin }: Props) => {
               <Button
                 type="submit"
                 size="sm"
-                disabled={isPending}
+                disabled={isPending || isUpading}
                 className="transition-colors hover:border-pink-400 hover:bg-pink-400 hover:text-black"
               >
                 Save changes

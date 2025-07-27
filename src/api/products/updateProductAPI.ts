@@ -1,8 +1,8 @@
 import { request } from '@/lib/axios';
-import { ErrorType } from '@/types/utils';
 import { IProduct } from '@/types/product';
+import { ErrorType } from '@/types/utils';
 
-type Props = {
+type Product = {
   category: string;
   tags: string[];
 } & Omit<
@@ -17,11 +17,16 @@ type Props = {
   | 'content'
 >;
 
-export const postProductAPI = async (body: Props) => {
+interface Props {
+  id: string;
+  body: Product;
+}
+
+export const updateProductAPI = async ({ id, body }: Props) => {
   const { data, error } = await request({
     options: {
-      method: 'POST',
-      url: `/products`,
+      method: 'PATCH',
+      url: `/products/${id}`,
       data: body,
     },
   });

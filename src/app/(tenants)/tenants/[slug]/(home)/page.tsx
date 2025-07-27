@@ -1,6 +1,6 @@
 import { getProductsAPI } from '@/api/products';
 import { ProductsListView } from '@/app/(home)/[category]/_components/ProductsListView';
-import { getQueryClient } from '@/lib/react-query';
+import { createServerQueryClient } from '@/lib/react-server-query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 const TenantPage = async ({
@@ -10,7 +10,7 @@ const TenantPage = async ({
 }) => {
   const { slug } = await params;
 
-  const queryClient = getQueryClient();
+  const queryClient = createServerQueryClient();
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['products', slug],
     queryFn: async () => await getProductsAPI(`products?tenantSlug=${slug}`),

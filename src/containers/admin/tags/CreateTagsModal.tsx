@@ -22,8 +22,7 @@ import {
 } from '@/components/ui/form';
 import { postTagAPI } from '@/api/products';
 import { Input } from '@/components/ui/input';
-import { useMutation } from '@tanstack/react-query';
-import { getQueryClient } from '@/lib/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   open: boolean;
@@ -41,7 +40,7 @@ const formSchema = z.object({
 type formSchemaType = z.infer<typeof formSchema>;
 
 export const CreateTagsModal = ({ onClose, open }: Props) => {
-  const queryClient = getQueryClient();
+  const queryClient = useQueryClient();
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {

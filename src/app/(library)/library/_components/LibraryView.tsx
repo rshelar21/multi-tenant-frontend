@@ -12,7 +12,7 @@ const poppins = Poppins({
 
 export const LibraryView = () => {
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <nav className="flex h-20 w-full justify-between border-b bg-[#F4F4F0] dark:bg-black">
         <Link href="/" className="flex items-center pl-6">
           <span className={cn('text-5xl font-semibold', poppins.className)}>
@@ -31,7 +31,7 @@ export const LibraryView = () => {
           <p className="font-medium">Your purchases and reviews</p>
         </div>
       </header>
-      <section className="mx-auto max-w-(--breakpoint-xl) px-4 py-10 lg:px-12">
+      <section className="mx-auto w-full max-w-(--breakpoint-xl) flex-1 px-4 py-4 lg:px-12">
         <ProductsList />
       </section>
       <Footer />

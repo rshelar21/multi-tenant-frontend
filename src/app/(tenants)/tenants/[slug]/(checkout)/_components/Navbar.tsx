@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { generateTenantURL } from '@/utils';
-
 import { Button } from '@/components/ui/button';
 
 interface Props {
@@ -9,7 +8,7 @@ interface Props {
 
 export const Navbar = ({ slug }: Props) => {
   return (
-    <nav className="h-20 border-b bg-white font-medium">
+    <nav className="h-20 border-b bg-white font-medium dark:bg-black">
       <div className="mx-auto flex h-full max-w-(--breakpoint-xl) items-center justify-between px-4 lg:px-12">
         <p className="text-xl">Checkout</p>
         <Button variant="elevated" asChild>

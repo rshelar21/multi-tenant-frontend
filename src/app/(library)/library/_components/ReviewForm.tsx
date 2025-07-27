@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,11 +13,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { postReviewAPI } from '@/api/reviews';
 import { Textarea } from '@/components/ui/textarea';
 import { StarPicker } from '@/components/common';
-import { getQueryClient } from '@/lib/react-query';
 import { Reviews } from '@/types/reviews';
 
 interface ReviewFormProps {
@@ -41,8 +40,7 @@ const formSchema = z.object({
 type formSchemaType = z.infer<typeof formSchema>;
 
 export const ReviewForm = ({ productId, data }: ReviewFormProps) => {
-  const queryClient = getQueryClient();
-  const [isPreview] = useState(!!data);
+  const queryClient = useQueryClient();
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,6 +59,8 @@ export const ReviewForm = ({ productId, data }: ReviewFormProps) => {
     }
   }, [data, form]);
 
+  const isPreview = !!data?.id;
+
   const { mutate, isPending } = useMutation({
     mutationFn: postReviewAPI,
     onError: (error) => {
@@ -69,7 +69,7 @@ export const ReviewForm = ({ productId, data }: ReviewFormProps) => {
     onSuccess: () => {
       toast.success('Review Added!');
       queryClient.invalidateQueries({
-        queryKey: ['reviews'],
+        queryKey: ['reviews', productId],
       });
     },
   });

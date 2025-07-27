@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { InboxIcon, LoaderIcon } from 'lucide-react';
 import { useCheckoutSession } from '@/hooks/use-checkout-session';
 import { useCart } from '@/hooks/use-cart';
@@ -10,7 +10,6 @@ import { postCreateSessionAPI } from '@/api/payments';
 import { CheckoutSidebar } from './CheckoutSidebar';
 import { CheckoutItem } from './CheckoutItem';
 import { toast } from 'sonner';
-import { getQueryClient } from '@/lib/react-query';
 import { useRouter } from 'next/navigation';
 interface CheckoutViewProps {
   tenantSlug: string;
@@ -19,7 +18,7 @@ interface CheckoutViewProps {
 export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
   const { productIds, toggleProducts, clearTenantCart } = useCart(tenantSlug);
   const [state, setStates] = useCheckoutSession();
-  const queryClient = getQueryClient();
+  const queryClient = useQueryClient();
   const router = useRouter();
 
   const { data, isLoading } = useQuery({
@@ -67,12 +66,13 @@ export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       router.push('/library');
     }
-  }, [clearTenantCart, state]);
+    // eslint-disable-next-line  react-hooks/exhaustive-deps
+  }, [clearTenantCart, state, router]);
 
   if (isLoading) {
     return (
       <div className="px-6 pt-4 lg:px-12 lg:pt-16">
-        <div className="flex flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed border-black bg-white p-8">
+        <div className="dark:bg-input/30 flex flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed border-black bg-white p-8">
           <LoaderIcon className="text-muted-foreground animate-spin" />
         </div>
       </div>
@@ -82,7 +82,7 @@ export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
   if (!isLoading && data?.length === 0) {
     return (
       <div className="px-6 pt-4 lg:px-12 lg:pt-16">
-        <div className="flex flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed border-black bg-white p-8">
+        <div className="dark:bg-input/30 flex flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed border-black bg-white p-8">
           <InboxIcon />
           <p className="text-base font-medium">No products found</p>
         </div>
@@ -94,7 +94,7 @@ export const CheckoutView = ({ tenantSlug }: CheckoutViewProps) => {
     <div className="px-6 pt-4 lg:px-12 lg:pt-16">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-7 lg:gap-16">
         <div className="lg:col-span-4">
-          <div className="overflow-hidden rounded-md border bg-white">
+          <div className="dark:bg-input/30 overflow-hidden rounded-md border bg-white">
             {data?.map((product, index) => (
               <CheckoutItem
                 key={product?.id}

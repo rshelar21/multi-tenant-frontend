@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getQueryClient } from '@/lib/react-query';
+import { createServerQueryClient } from '@/lib/react-server-query';
 import { getSingleProductAPI } from '@/api/products';
 import { getReviewsAPI } from '@/api/reviews';
 import { LibraryDetails } from '../_components/LibraryDetails';
@@ -10,7 +10,7 @@ const LibraryDetailsPage = async ({
   params: Promise<{ productId: string }>;
 }) => {
   const { productId } = await params;
-  const queryClient = getQueryClient();
+  const queryClient = createServerQueryClient();
   await queryClient.prefetchQuery({
     queryKey: ['products', productId],
     queryFn: async () => await getSingleProductAPI(productId),

@@ -83,7 +83,7 @@ export const ProductsList = ({
 
   if (data?.pages[0].data?.length === 0 && !isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed border-black bg-white p-8">
+      <div className="dark:bg-input/30 flex flex-col items-center justify-center gap-y-4 rounded-lg border border-dashed border-black bg-white p-8">
         <InboxIcon />
         <p className="text-base font-medium">No products found</p>
       </div>
