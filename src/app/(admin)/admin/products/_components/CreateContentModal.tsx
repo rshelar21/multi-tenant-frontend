@@ -1,8 +1,11 @@
 'use client';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { patchProductContentAPI } from '@/api/products';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -20,10 +23,7 @@ import {
   FormMessage,
   FormDescription,
 } from '@/components/ui/form';
-import { useMutation, useQueryClient} from '@tanstack/react-query';
 import { RichTextEditer } from '@/components/common';
-import { postProductContentAPI } from '@/api/products';
-import { useEffect } from 'react';
 import { Content, IProduct } from '@/types/product';
 
 interface Props {
@@ -81,12 +81,12 @@ export const CreateContentModal = ({
   };
 
   const { mutate, isPending } = useMutation({
-    mutationFn: postProductContentAPI,
+    mutationFn: patchProductContentAPI,
     onError: (error) => {
       toast.error(`${error.message}`);
     },
     onSuccess: async () => {
-      toast.success('Content Created!');
+      toast.success('Content Added!');
       await queryClient.invalidateQueries({
         queryKey: ['admin-products', isSuperAdmin],
         refetchType: 'all',

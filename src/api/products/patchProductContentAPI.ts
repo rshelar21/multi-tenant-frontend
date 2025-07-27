@@ -6,10 +6,10 @@ interface Props {
   id: string;
 }
 
-export const postProductContentAPI = async (body: Props) => {
+export const patchProductContentAPI = async (body: Props) => {
   const { data, error } = await request({
     options: {
-      method: 'POST',
+      method: 'PATCH',
       url: `/products/content`,
       data: body,
     },

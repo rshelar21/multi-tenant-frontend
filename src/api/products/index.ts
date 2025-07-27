@@ -4,7 +4,7 @@ export { getProductCategoryAPI } from './getProductCategoryAPI';
 export { postProductAPI } from './postProductAPI';
 export { getSingleProductAPI } from './getSingleProductAPI';
 export { getManyProductsAPI } from './getManyProductsAPI';
-export { postProductContentAPI } from './postProductContentAPI';
+export { patchProductContentAPI } from './patchProductContentAPI';
 export { deleteProductAPI } from './deleteProductAPI';
 export { updateProductAPI } from './updateProductAPI';
 
