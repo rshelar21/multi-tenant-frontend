@@ -16,20 +16,6 @@ export const metadata: Metadata = {
   title: 'Funroad',
   description:
     'Funroad is a modern e-commerce platform for buying and selling digital products including software, eBooks, templates, and more. Instant delivery. Secure payments.',
-  keywords: [
-    'digital products',
-    'buy digital goods',
-    'sell digital goods',
-    'ecommerce for digital items',
-    'Funroad',
-    'online marketplace',
-    'digital downloads',
-    'eBooks',
-    'software licenses',
-    'templates',
-    'instant delivery',
-    'secure checkout',
-  ],
 };
 
 export default function RootLayout({
