@@ -38,7 +38,7 @@ const NavbarItem = ({ children, href, isActive }: NavbarItemsProps) => {
 };
 
 const navbarItems = [
-  { href: '/', children: 'Home' },
+  { href: process.env.NEXT_PUBLIC_APP_FRONTEND_URL!, children: 'Home' },
   // { href: '/about', children: 'About' },
   { href: '/settings', children: 'Settings' },
   // { href: '/features', children: 'Features' },
@@ -53,7 +53,10 @@ export const Navbar = () => {
 
   return (
     <nav className="flex h-20 justify-between border-b bg-white font-medium dark:bg-black">
-      <Link href="/" className="flex items-center pl-6">
+      <Link
+        href={process.env.NEXT_PUBLIC_APP_FRONTEND_URL!}
+        className="flex items-center pl-6"
+      >
         <span className={cn('text-5xl font-semibold', poppins.className)}>
           funroad
         </span>
