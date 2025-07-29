@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "commit": "cz",
-    "prepare": "husky",
+    "prepare": "if [[ $NODE_ENV != \"production\" ]]; husky",
     "precommit": "npm run lint"
   },
   "dependencies": {
