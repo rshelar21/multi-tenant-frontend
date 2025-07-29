@@ -13,9 +13,8 @@ export function middleware(request: NextRequest) {
 
   if (host.endsWith(`.${rootDomain}`)) {
     const tenantSlug = host?.replace(`.${rootDomain}`, '');
-    console.log('REWRITE:', `/tenants/${tenantSlug}${nextUrl.pathname}`);
     return NextResponse.rewrite(
-      new URL(`/tenants/${tenantSlug}/${nextUrl.pathname}`, request.url)
+      new URL(`/tenants/${tenantSlug}${nextUrl.pathname}`, request.url)
     );
   }
   return NextResponse.next();
