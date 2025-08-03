@@ -1,14 +1,14 @@
 'use client';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { generateUrl } from '@/utils/generateUrl';
-import { ProductCard, ProductSkeletonLoading } from './ProductCard';
 import { InboxIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { DEFAULT_API_LIMIT } from '@/constants';
 import { useAppSelector } from '@/store/hooks';
 import { selectedUser } from '@/reducers/userSlice';
-import { cn } from '@/lib/utils';
 import { getOrdersAPI } from '@/api/orders';
+import { Button } from '@/components/ui/button';
+import { generateUrl } from '@/utils/generateUrl';
+import { DEFAULT_API_LIMIT } from '@/constants';
+import { cn } from '@/lib/utils';
+import { ProductCard, ProductSkeletonLoading } from './ProductCard';
 
 export const ProductsList = () => {
   const { roles } = useAppSelector(selectedUser);

@@ -17,7 +17,7 @@ interface IUserState {
     updatedAt: string;
     roleType: number;
   }[];
-  tenant: ITenants | null;
+  tenant: ITenants;
   createdAt: string;
   updatedAt: string;
 }
@@ -59,17 +59,26 @@ export const userSlice = createSlice({
       state.accessToken = '';
       state.loginStatus = false;
       state.roles = [];
-      state.tenant = null;
+      state.tenant = {} as ITenants;
       state.createdAt = '';
       state.updatedAt = '';
     },
     updateAccessToken: (state, action) => {
       state.accessToken = action.payload.accessToken;
     },
+    updateStoreImg: (
+      state,
+      action: PayloadAction<{
+        storeImg: string | null;
+      }>
+    ) => {
+      state.tenant.storeImg = action.payload.storeImg;
+    },
   },
 });
 
-export const { createUser, removeUser, updateAccessToken } = userSlice.actions;
+export const { createUser, removeUser, updateAccessToken, updateStoreImg } =
+  userSlice.actions;
 
 export const selectedUser = (state: RootState) => state.user;
 

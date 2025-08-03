@@ -116,7 +116,7 @@ export const CreateProductsModal = ({
   });
 
   useEffect(() => {
-    if (data?.id) {
+    if (data) {
       form.reset({
         category: {
           value: data?.category?.id,

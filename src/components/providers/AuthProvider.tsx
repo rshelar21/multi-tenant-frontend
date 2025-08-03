@@ -16,6 +16,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const [showLoader, setShowLoader] = useState(true);
 
+
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
   const isProtectedRoute = !isPublicRoute;
 

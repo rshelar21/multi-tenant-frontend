@@ -1,6 +1,6 @@
 import { getSingleProductAPI } from '@/api/products';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { ProductView } from './_components/ProductView';
+import { ProductView } from '@/containers/tenants';
 import { createServerQueryClient } from '@/lib/react-server-query';
 
 const ProductPage = async ({

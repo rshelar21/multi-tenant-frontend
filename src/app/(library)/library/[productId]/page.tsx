@@ -2,7 +2,7 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { createServerQueryClient } from '@/lib/react-server-query';
 import { getSingleProductAPI } from '@/api/products';
 import { getReviewsAPI } from '@/api/reviews';
-import { LibraryDetails } from '../_components/LibraryDetails';
+import { LibraryDetails } from '@/containers/library';
 
 const LibraryDetailsPage = async ({
   params,

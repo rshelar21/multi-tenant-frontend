@@ -4,13 +4,12 @@ import { Button } from '../ui/button';
 import { FormLabel, FormMessage } from '../ui/form';
 import { Trash, Upload } from 'lucide-react';
 import Image from 'next/image';
+import { MAX_FILE_SIZE_LIMIT } from '@/constants';
 
 interface ImageUploaderProps {
   onChange: (e: File | null) => void;
   value: File | string;
 }
-
-const fileSizeLimit = 3 * 1024 * 1024; // 3Mb
 
 export const ImageUploader = ({ onChange, value }: ImageUploaderProps) => {
   // eslint-disable-next-line  @typescript-eslint/no-unused-vars
@@ -29,7 +28,7 @@ export const ImageUploader = ({ onChange, value }: ImageUploaderProps) => {
     setError('');
     const file = e.target.files?.[0];
     if (file) {
-      if (file.size >= fileSizeLimit) {
+      if (file.size >= MAX_FILE_SIZE_LIMIT) {
         setError('File size should not exceed 3MB');
         return;
       }

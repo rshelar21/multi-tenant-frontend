@@ -36,8 +36,10 @@ export const AdminCategoryTable = ({
         header: 'Category ID',
         cell: (info) => (
           <TableCellWrapper>
-            <TruncateText text={info.getValue()} />
-            <CopyToClipboard text={info.getValue()} />
+            <div className="flex gap-2">
+              <TruncateText text={info.getValue()} />
+              <CopyToClipboard text={info.getValue()} />
+            </div>
           </TableCellWrapper>
         ),
         size: 100,

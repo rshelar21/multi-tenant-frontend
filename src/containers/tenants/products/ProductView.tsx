@@ -1,18 +1,18 @@
 'use client';
 import { Fragment, useMemo, useState } from 'react';
+import { useQueries } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import Image from 'next/image';
+import Link from 'next/link';
+import { CheckIcon, LinkIcon, StarIcon } from 'lucide-react';
 import { getSingleProductAPI } from '@/api/products';
 import { getSingleOrderAPI } from '@/api/orders';
-import { useQueries } from '@tanstack/react-query';
-import Image from 'next/image';
-import { formatCurrency, generateTenantURL } from '@/utils';
-import Link from 'next/link';
-import { StarRatings } from './StarRatings';
 import { Button } from '@/components/ui/button';
-import { CheckIcon, LinkIcon, StarIcon } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-import { AddToCartButton } from './AddToCartButton';
-import { toast } from 'sonner';
 import { Loader } from '@/components/common';
+import { formatCurrency, generateTenantURL } from '@/utils';
+import { AddToCartButton } from './AddToCartButton';
+import { StarRatings } from './StarRatings';
 
 interface Props {
   productId: string;

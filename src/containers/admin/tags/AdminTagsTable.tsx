@@ -5,6 +5,7 @@ import {
   CopyToClipboard,
   ReactTable,
   TableCellWrapper,
+  TruncateText,
 } from '@/components/common';
 import { IProductTag } from '@/types/product';
 import { IMeta } from '@/types/utils';
@@ -33,8 +34,10 @@ export const AdminTagsTable = ({
         header: 'Tag ID',
         cell: (info) => (
           <TableCellWrapper>
-            {info.getValue()}
-            <CopyToClipboard text={info.getValue()} />
+            <div className="flex gap-2">
+              <TruncateText text={info.getValue()} />
+              <CopyToClipboard text={info.getValue()} />
+            </div>
           </TableCellWrapper>
         ),
         // size: 10,

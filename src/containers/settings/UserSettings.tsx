@@ -1,4 +1,5 @@
 'use client';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
@@ -11,9 +12,13 @@ import {
   User,
   Moon,
   Sun,
+  Pencil,
+  Trash,
+  Check,
 } from 'lucide-react';
-import { selectedUser } from '@/reducers/userSlice';
-import { useAppSelector } from '@/store/hooks';
+import { selectedUser, updateStoreImg } from '@/reducers/userSlice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { capitalize } from '@/utils';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -27,16 +32,82 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { CopyToClipboard, PageHeading } from '@/components/common';
 import { UpdateUserPasswordModal } from './UpdateUserPasswordModal';
-import { useState } from 'react';
+import { MAX_FILE_SIZE_LIMIT } from '@/constants';
+import { patchUserAPI } from '@/api/users';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { ImageUpload } from '@/services';
 
 export const UserSettings = () => {
   const { setTheme } = useTheme();
   const user = useAppSelector(selectedUser);
   const [isOpen, setIsOpen] = useState(false);
+  const [userImg, setUserImg] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
 
-  function capitalize(value: string) {
-    return value[0]?.toUpperCase() + value?.slice(1);
-  }
+  const { mutate, isPending } = useMutation({
+    mutationKey: ['user'],
+    mutationFn: patchUserAPI,
+    onSuccess: (data) => {
+      dispatch(
+        updateStoreImg({
+          storeImg: data?.tenant.storeImg,
+        })
+      );
+      queryClient.invalidateQueries({
+        queryKey: ['me'],
+      });
+      toast.success('Profile Updated!');
+      setImage(null);
+      setUserImg(null);
+    },
+    onError: (err) => {
+      toast.error(err.message);
+    },
+  });
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size >= MAX_FILE_SIZE_LIMIT) {
+        toast.error('File size should not exceed 3MB');
+        return;
+      }
+      setImage(file);
+      setUserImg(URL.createObjectURL(file));
+    }
+  };
+
+  const handleUploadImg = async () => {
+    const res = await ImageUpload(image as File);
+    mutate({
+      id: user.id,
+      storeImg: res.secure_url,
+    });
+  };
+
+  const handleButtonClick = (): void => {
+    if (userImg) {
+      handleUploadImg();
+    } else {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleRemoveImage = (): void => {
+    if (userImg) {
+      setUserImg(null);
+      setImage(null);
+    } else {
+      mutate({
+        id: user.id,
+        storeImg: null,
+      });
+    }
+  };
 
   return (
     <div className="">
@@ -65,13 +136,54 @@ export const UserSettings = () => {
           </CardHeader>
           <CardContent>
             <div className="flex items-start gap-5">
-              <div className="relative h-36 w-36 overflow-hidden rounded-[999px] border border-gray-200">
+              <div className="relative h-36 w-36 rounded-[999px] border border-gray-400">
                 <Image
                   alt={user?.username}
                   fill
-                  src={'/placeholder.png'}
-                  className="object-cover"
+                  src={userImg || user.tenant?.storeImg || '/placeholder.png'}
+                  className="rounded-[999px] object-cover"
                 />
+                {(userImg || user.tenant?.storeImg) && (
+                  <div className="absolute inset-0 z-[999] flex cursor-pointer items-center justify-center rounded-[999px] bg-[rgba(0,0,0,0.4)] opacity-0 transition-all hover:opacity-100">
+                    <Button
+                      onClick={handleRemoveImage}
+                      className="rounded-full border-red-400 bg-red-100 hover:bg-red-200"
+                      variant="ghost"
+                    >
+                      <Trash className="size-6 text-red-700" />
+                    </Button>
+                  </div>
+                )}
+
+                <div className="absolute top-3/12 -right-3 z-[9999]">
+                  <label htmlFor="user-profile">
+                    <Input
+                      type="file"
+                      id="user-profile"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      ref={fileInputRef}
+                    />
+                    <Button
+                      disabled={isPending}
+                      onClick={handleButtonClick}
+                      size="icon"
+                      variant="outline"
+                      className="cursor-pointer rounded-[999px] border-gray-300 bg-white p-5 text-xs transition-all hover:scale-105 dark:border-gray-500 dark:bg-black hover:dark:bg-black"
+                    >
+                      {userImg ? (
+                        <>
+                          <Check className="size-3.5" />
+                        </>
+                      ) : (
+                        <>
+                          <Pencil className="size-3.5" />
+                        </>
+                      )}
+                    </Button>
+                  </label>
+                </div>
               </div>
 
               <div className="">
@@ -81,47 +193,6 @@ export const UserSettings = () => {
                 <p className="text-base font-medium text-gray-600">
                   @{user.username}
                 </p>
-
-                {/* <div className="mt-10">
-                  <p className="pb-2">Email</p>
-                  <div className="rounded-lg border border-gray-400 p-1 px-6 text-gray-600">
-                    {user.email}
-                    <CopyToClipboard text={user?.email} />
-                  </div>
-                </div> */}
-
-                {/* <div className="mt-7 w-full">
-                  <Card className="w-full rounded-lg border-gray-400 shadow">
-                    <CardHeader>
-                      <CardTitle className="text-xl font-medium">
-                        Order details
-                      </CardTitle>
-                      <CardDescription className="">
-                        Orders summary
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex gap-2">
-                      <div className="relative flex w-[100px] flex-col gap-1">
-                        <p className="">Total Orders</p>
-                        <h6 className="self-end px-2 text-3xl font-medium">
-                          12
-                        </h6>
-                      </div>
-                      <div className="relative flex w-[100px] flex-col gap-1">
-                        <p className="">Total Orders</p>
-                        <h6 className="self-end px-2 text-3xl font-medium">
-                          12
-                        </h6>
-                      </div>
-                      <div className="relative flex w-[100px] flex-col gap-1">
-                        <p className="">Total Orders</p>
-                        <h6 className="self-end px-2 text-3xl font-medium">
-                          12
-                        </h6>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div> */}
               </div>
             </div>
 

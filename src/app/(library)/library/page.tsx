@@ -1,7 +1,7 @@
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { getOrdersAPI } from '@/api/orders';
 import { createServerQueryClient } from '@/lib/react-server-query';
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { LibraryView } from './_components/LibraryView';
+import { LibraryView } from '@/containers/library';
 
 const LibraryPage = async () => {
   const queryClient = createServerQueryClient();

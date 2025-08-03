@@ -1,4 +1,4 @@
-import { ProductsListView } from './[category]/_components/ProductsListView';
+import { ProductsListView } from '@/containers/category';
 
 export default function Home() {
   return (

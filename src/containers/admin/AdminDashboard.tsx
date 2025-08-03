@@ -201,6 +201,16 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
                   </div>
                 </div>
               ))}
+              {data?.orders.length === 0 && (
+                <div className="">
+                  <h5 className="text-center text-lg font-semibold text-gray-300">
+                    Order History is Empty
+                  </h5>
+                  <p className="text-center text-sm font-normal text-gray-400">
+                    No orders found for your account
+                  </p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -242,6 +252,16 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
                   />
                 </div>
               ))}
+              {data?.orders.length === 0 && (
+                <div className="">
+                  <h5 className="text-center text-lg font-semibold text-gray-300">
+                    Top Products Not Found
+                  </h5>
+                  <p className="text-center text-sm font-normal text-gray-400">
+                    There are currently no products with sales data
+                  </p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>

@@ -1,5 +1,5 @@
 import { getProductsAPI } from '@/api/products';
-import { ProductsListView } from '@/app/(home)/[category]/_components/ProductsListView';
+import { ProductsListView } from '@/containers/category/ProductsListView';
 import { createServerQueryClient } from '@/lib/react-server-query';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 

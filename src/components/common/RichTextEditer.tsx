@@ -25,15 +25,17 @@ export const RichTextEditer = ({
   });
 
   return (
-    <BlockNoteView
-      editor={editor}
-      onChange={(e) => {
-        onChange?.(e.document);
-      }}
-      data-testid="blocknote-editor"
-      editable={isEditable}
-      theme={theme as 'light' | 'dark'}
-      className="rounded-md border border-gray-400 dark:border-gray-800"
-    />
+    <div className="w-full overflow-x-auto">
+      <BlockNoteView
+        editor={editor}
+        onChange={(e) => {
+          onChange?.(e.document);
+        }}
+        data-testid="blocknote-editor"
+        editable={isEditable}
+        theme={theme as 'light' | 'dark'}
+        className="rounded-md border border-gray-400 dark:border-gray-800"
+      />
+    </div>
   );
 };

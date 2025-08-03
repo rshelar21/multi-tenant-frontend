@@ -18,6 +18,7 @@ import Link from 'next/link';
 import { usePagination } from '@/hooks/use-pagination';
 import { IMeta } from '@/types/utils';
 import {
+  ChartColumnIncreasing,
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
@@ -34,13 +35,17 @@ interface ReactTableProps<T> {
   meta?: IMeta | undefined;
 }
 
-const TableSkeleton = ({ columnSpan }: { columnSpan: number }) => {
+const TableSkeleton = () => {
   return (
-    <TableRow className="last:border-0">
-      <TableCell colSpan={columnSpan}>
-        <Skeleton className="h-6" />
-      </TableCell>
-    </TableRow>
+    <>
+      {[...new Array(4)].map((i) => (
+        <TableRow className="last:border-0" key={i}>
+          <TableCell colSpan={10}>
+            <Skeleton className="h-8" />
+          </TableCell>
+        </TableRow>
+      ))}
+    </>
   );
 };
 
@@ -102,7 +107,7 @@ export const ReactTable = <T,>({
             {getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="h-12 text-center">
+                  <TableHead key={header.id} className="h-12 px-5">
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext()
@@ -114,9 +119,9 @@ export const ReactTable = <T,>({
           </TableHeader>
 
           <TableBody className="rounded-lg">
-            {isWarningMsg && (
+            {isWarningMsg ? (
               <TableRow>
-                <TableCell colSpan={7}>
+                <TableCell colSpan={10}>
                   <div className="flex flex-col items-center gap-2 py-2">
                     <Button asChild size="sm">
                       <Link prefetch href="/admin">
@@ -127,17 +132,42 @@ export const ReactTable = <T,>({
                   </div>
                 </TableCell>
               </TableRow>
+            ) : (
+              <>
+                {isLoading ? (
+                  <TableSkeleton />
+                ) : !isLoading && getRowModel().rows.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={10}>
+                      <div className="flex flex-col items-center gap-2 py-4">
+                        <Button variant="outline" size="icon">
+                          <ChartColumnIncreasing className="size-5" />
+                        </Button>
+                        <h5 className="text-2xl font-semibold">
+                          No Data Found
+                        </h5>
+                        <p className="text-base font-normal">
+                          There&apos;s nothing to display right now
+                        </p>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  getRowModel().rows.map((row) => (
+                    <TableRow key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="px-5">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                )}
+              </>
             )}
-            {isLoading && <TableSkeleton columnSpan={columns.length} />}
-            {getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-5">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
           </TableBody>
         </Table>
       </div>

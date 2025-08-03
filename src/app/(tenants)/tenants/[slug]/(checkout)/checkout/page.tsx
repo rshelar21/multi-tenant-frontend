@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckoutView } from './components/CheckoutView';
+import { CheckoutView } from '@/containers/tenants';
 
 const CheckoutPage = async ({
   params,
@@ -9,7 +9,7 @@ const CheckoutPage = async ({
   const { slug } = await params;
   return (
     <div>
-      <CheckoutView tenantSlug={slug}/>
+      <CheckoutView tenantSlug={slug} />
     </div>
   );
 };

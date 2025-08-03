@@ -7,10 +7,10 @@ import { useCart } from '@/hooks/use-cart';
 import { getManyProductsAPI } from '@/api/products';
 import { generateTenantURL, generateUrl } from '@/utils';
 import { postCreateSessionAPI } from '@/api/payments';
-import { CheckoutSidebar } from './CheckoutSidebar';
-import { CheckoutItem } from './CheckoutItem';
+import { CheckoutSidebar, CheckoutItem } from '@/containers/tenants';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+
 interface CheckoutViewProps {
   tenantSlug: string;
 }

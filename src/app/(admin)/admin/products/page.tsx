@@ -36,7 +36,7 @@ const AdminProductsPage = () => {
         path: '/products',
         params: {
           limit: 12,
-          access: isUserSuperAdmin ? 'admin' : undefined,
+          access: isUserSuperAdmin ? 'admin' : 'user',
           page: page,
         },
       });

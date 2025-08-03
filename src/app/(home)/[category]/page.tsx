@@ -1,7 +1,7 @@
 import { getProductsAPI } from '@/api/products';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { createServerQueryClient } from '@/lib/react-server-query';
-import { ProductsListView } from './_components/ProductsListView';
+import { ProductsListView } from '@/containers/category';
 
 const CategoryPage = async ({
   params,

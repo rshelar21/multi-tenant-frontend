@@ -3,13 +3,14 @@ import { getProductsAPI } from '@/api/products';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useProductFilters } from '@/hooks/use-product-filters';
 import { generateUrl } from '@/utils/generateUrl';
-import { ProductCard, ProductSkeletonLoading } from './ProductCard';
 import { InboxIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DEFAULT_API_LIMIT } from '@/constants';
 import { useAppSelector } from '@/store/hooks';
 import { selectedUser } from '@/reducers/userSlice';
 import { cn } from '@/lib/utils';
+import { ProductCard, ProductSkeletonLoading } from './ProductCard';
+
 interface IProductsListProps {
   category?: string;
   subCategory?: string;
@@ -56,7 +57,7 @@ export const ProductsList = ({
           tags,
           limit: DEFAULT_API_LIMIT,
           page: pageParam?.pageParam,
-          access: isSuperAdmin ? 'admin' : 'user',
+          // access: isSuperAdmin ? 'admin' : undefined,
           tenantSlug: tenantSlug,
           q: search,
         },
