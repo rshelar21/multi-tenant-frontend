@@ -11,7 +11,6 @@ export function middleware(request: NextRequest) {
 
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
   const rootOnlyRoutes = [
-    '/',
     '/settings',
     '/admin',
     '/pricing',
