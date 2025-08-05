@@ -22,8 +22,12 @@ export function middleware(request: NextRequest) {
 
   if (
     host.endsWith(`.${rootDomain}`) &&
-    !rootOnlyRoutes.includes(nextUrl.pathname)
+    rootOnlyRoutes.includes(nextUrl.pathname)
   ) {
+    return NextResponse.redirect(`https://${rootDomain}${nextUrl.pathname}`);
+  }
+
+  if (host.endsWith(`.${rootDomain}`)) {
     const tenantSlug = host?.replace(`.${rootDomain}`, '');
     return NextResponse.rewrite(
       new URL(`/tenants/${tenantSlug}${nextUrl.pathname}`, request.url)
