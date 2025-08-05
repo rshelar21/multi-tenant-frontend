@@ -10,8 +10,20 @@ export function middleware(request: NextRequest) {
   const host = headers.get('host') || '';
 
   const rootDomain = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
+  const rootOnlyRoutes = [
+    '/',
+    '/settings',
+    '/admin',
+    '/pricing',
+    '/admin/products',
+    '/admin/category',
+    '/admin/tags',
+  ];
 
-  if (host.endsWith(`.${rootDomain}`)) {
+  if (
+    host.endsWith(`.${rootDomain}`) &&
+    !rootOnlyRoutes.includes(nextUrl.pathname)
+  ) {
     const tenantSlug = host?.replace(`.${rootDomain}`, '');
     return NextResponse.rewrite(
       new URL(`/tenants/${tenantSlug}${nextUrl.pathname}`, request.url)
