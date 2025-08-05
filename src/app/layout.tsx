@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: 'Funroad',
   description:
     'Funroad is a modern e-commerce platform for buying and selling digital products including software, eBooks, templates, and more. Instant delivery. Secure payments.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default async function RootLayout({
