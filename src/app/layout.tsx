@@ -7,6 +7,8 @@ import ReduxProvider from '@/components/providers/ReduxProvider';
 import AuthProvider from '@/components/providers/AuthProvider';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/providers/ThemProvider';
+import { cookies } from 'next/headers';
+import { ThemeSync } from '@/components/providers/ThemeSync';
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -18,21 +20,24 @@ export const metadata: Metadata = {
     'Funroad is a modern e-commerce platform for buying and selling digital products including software, eBooks, templates, and more. Instant delivery. Secure payments.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const theme = (await cookies()).get('theme')?.value;
+
   return (
     <html lang="en">
-      <body className={`${dmSans.className} antialiased`}>
+      <body className={`${dmSans.className} antialiased ${theme}`}>
         <ThemeProvider
           defaultTheme="light"
           attribute="class"
           enableSystem
           disableTransitionOnChange
-          storageKey="funroad-theme"
+          // storageKey="funroad-theme"
         >
+          <ThemeSync />
           <NuqsAdapter>
             <ReactQueryProvider>
               <ReduxProvider>
