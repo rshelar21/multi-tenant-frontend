@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { formatCurrency } from '@/utils';
-import { CircleXIcon } from 'lucide-react';
 import React from 'react';
+import { Button } from '@/components/ui/button';
+import { CircleXIcon } from 'lucide-react';
+import { formatCurrency } from '@/utils';
 
 interface CheckoutSidebarProps {
   totalPrice: number;

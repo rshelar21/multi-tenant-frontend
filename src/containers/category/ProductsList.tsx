@@ -10,6 +10,8 @@ import { useAppSelector } from '@/store/hooks';
 import { selectedUser } from '@/reducers/userSlice';
 import { cn } from '@/lib/utils';
 import { ProductCard, ProductSkeletonLoading } from './ProductCard';
+import { ProductCheckoutStatusCard } from '@/components/common';
+import { useSearchParams } from 'next/navigation';
 
 interface IProductsListProps {
   category?: string;
@@ -27,6 +29,9 @@ export const ProductsList = ({
   const [{ maxPrice, minPrice, tags, search }] = useProductFilters();
   const { roles } = useAppSelector(selectedUser);
   const isSuperAdmin = roles?.some((i) => i.roleType === 1);
+  const params = useSearchParams();
+  const isSuccess = params.get('success') || 'false';
+  const isCancel = params.get('cancel') || 'false';
 
   const {
     data,
@@ -130,6 +135,13 @@ export const ProductsList = ({
           </Button>
         )}
       </div>
+      {(isSuccess === 'true' || isCancel === 'true') && (
+        <ProductCheckoutStatusCard
+          open
+          isSuccess={isSuccess}
+          isCancel={isCancel}
+        />
+      )}
     </>
   );
 };
