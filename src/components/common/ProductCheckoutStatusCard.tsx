@@ -1,6 +1,9 @@
 'use client';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { CheckCircle, X } from 'lucide-react';
+import { clearAllCarts } from '@/reducers/cartSlice';
+import { useAppDispatch } from '@/store/hooks';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 
@@ -15,6 +18,14 @@ export const ProductCheckoutStatusCard = ({
   isSuccess,
   isCancel,
 }: Props) => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const handleClearCart = (): void => {
+    dispatch(clearAllCarts());
+    router.push('/library');
+  };
+
   return (
     <Dialog open={open}>
       <DialogContent hideClose className="">
@@ -37,11 +48,14 @@ export const ProductCheckoutStatusCard = ({
               </p>
             </div>
 
-            <Link href="/library">
-              <Button variant="elevated" size="lg" className="w-full">
-                View
-              </Button>
-            </Link>
+            <Button
+              variant="elevated"
+              size="lg"
+              className="w-full"
+              onClick={handleClearCart}
+            >
+              View
+            </Button>
           </>
         )}
 

@@ -17,6 +17,7 @@ export function middleware(request: NextRequest) {
     '/admin/products',
     '/admin/category',
     '/admin/tags',
+    '/library',
   ];
 
   if (
