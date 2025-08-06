@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import Link from 'next/link';
 import { CheckCircle, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -37,7 +37,7 @@ export const ProductCheckoutStatusCard = ({
               </p>
             </div>
 
-            <Link href={'/'}>
+            <Link href="/library">
               <Button variant="elevated" size="lg" className="w-full">
                 View
               </Button>
