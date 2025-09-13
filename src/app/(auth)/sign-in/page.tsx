@@ -103,7 +103,7 @@ const SignInPage = () => {
               </Link>
               <Button
                 asChild
-                variant="ghost"
+                variant="link"
                 size="sm"
                 className="border-none text-base underline"
               >
@@ -133,22 +133,24 @@ const SignInPage = () => {
                 <FormItem>
                   <FormLabel className="text-base">Password</FormLabel>
                   <FormControl>
-                    <div className="flex items-center justify-between gap-2">
+                    <div className="relative flex items-center justify-between gap-2">
                       <Input
                         {...field}
                         type={showPassword ? 'text' : 'password'}
                       />
-                      {showPassword ? (
-                        <EyeOff
-                          className="size-6 cursor-pointer"
-                          onClick={() => setShowPassword(false)}
-                        />
-                      ) : (
-                        <Eye
-                          className="size-6 cursor-pointer"
-                          onClick={() => setShowPassword(true)}
-                        />
-                      )}
+                      <div className="absolute right-3">
+                        {showPassword ? (
+                          <EyeOff
+                            className="size-6 cursor-pointer"
+                            onClick={() => setShowPassword(false)}
+                          />
+                        ) : (
+                          <Eye
+                            className="size-6 cursor-pointer"
+                            onClick={() => setShowPassword(true)}
+                          />
+                        )}
+                      </div>
                     </div>
                   </FormControl>
                   <FormMessage />

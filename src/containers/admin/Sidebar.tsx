@@ -39,18 +39,20 @@ const navbarItems = [
 
 const NavbarItem = ({ children, href, isActive, Icon }: NavbarItemsProps) => {
   return (
-    <Link href={`${href}`} className="">
-      <Button
-        variant="elevated"
-        className={cn(
-          'w-full justify-start rounded-md border-0 bg-transparent text-left text-lg hover:border-1 hover:border-gray-300',
-          isActive && 'bg-black text-white hover:bg-black hover:text-white'
-        )}
-      >
-        <Icon className="size-5" />
-        {children}
-      </Button>
-    </Link>
+    <div
+      className={cn(
+        'hover:bg-surface rounded-md border border-transparent text-base transition-all duration-200 ease-in-out dark:text-white',
+        isActive &&
+          'bg-surface border-gray-300 dark:border-gray-500 dark:text-white'
+      )}
+    >
+      <Link href={`${href}`} prefetch>
+        <div className={cn('flex cursor-pointer items-center gap-4 px-4 py-2')}>
+          <Icon className="size-5" />
+          {children}
+        </div>
+      </Link>
+    </div>
   );
 };
 
@@ -59,7 +61,7 @@ export const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="dark:border-r-border max-h-screen w-full md:max-w-[250px] md:border-r md:border-r-gray-200 dark:bg-black">
+    <div className="dark:border-r-border dark:bg-background bg-background max-h-screen w-full md:max-w-[250px] md:border-r md:border-r-gray-200">
       <div className="hidden h-full flex-col justify-between md:flex">
         <div className="pt-3">
           <Link href="/" className="px-4">
@@ -82,12 +84,13 @@ export const Sidebar = () => {
           </div>
         </div>
         <div className="flex flex-col gap-2 px-3 pb-4">
-          <Button className="w-full" variant="elevated" asChild size='sm'>
-            <Link prefetch href="/settings">
-              <Settings />
-              Settings
-            </Link>
-          </Button>
+          <NavbarItem
+            Icon={Settings}
+            isActive={'/settings' === pathname}
+            href="/settings"
+          >
+            Settings
+          </NavbarItem>
           <LogtoutButton
             className="h-fit rounded-sm border text-base hover:bg-transparent dark:hover:bg-transparent"
             Icon={LogOut}

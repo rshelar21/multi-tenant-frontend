@@ -17,7 +17,6 @@ export const getSingleOrderAPI = async (url: string) => {
 
     throw new Error(errorMessage);
   }
-  await new Promise((resolve) => setTimeout(resolve, 3000));
 
   return data as Orders;
 };

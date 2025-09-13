@@ -39,8 +39,8 @@ const NavbarItem = ({ children, href, isActive }: NavbarItemsProps) => {
 
 const navbarItems = [
   { href: process.env.NEXT_PUBLIC_APP_FRONTEND_URL!, children: 'Home' },
-  // { href: '/about', children: 'About' },
   { href: '/settings', children: 'Settings' },
+  // { href: '/about', children: 'About' },
   // { href: '/features', children: 'Features' },
   // { href: '/pricing', children: 'Pricing' },
   // { href: '/contact', children: 'Contact' },

@@ -102,7 +102,9 @@ const StatsCard = ({
         <CardTitle className="text-muted-foreground text-sm font-medium">
           {title}
         </CardTitle>
-        <Icon className="text-muted-foreground h-4 w-4" />
+        <div className="bg-background/50 rounded-lg p-2">
+          <Icon className="text-muted-foreground h-4 w-4" />
+        </div>
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
@@ -136,7 +138,7 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {isSuperAdmin && (
           <StatsCard
@@ -166,25 +168,21 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-7">
+      <div className="grid grid-cols-7 gap-6 lg:grid-cols-7">
         {/* Recent Orders */}
-        <Card className="col-span-4">
+        <Card className="col-span-7 lg:col-span-4">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Recent Orders</CardTitle>
-                <CardDescription>
-                  Latest customer orders and their status
-                </CardDescription>
-              </div>
-            </div>
+            <CardTitle>Recent Orders</CardTitle>
+            <CardDescription>
+              Latest customer orders and their status
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {data?.orders?.map((order) => (
                 <div
                   key={order.id}
-                  className="flex items-center justify-between rounded-lg border p-4"
+                  className="flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all duration-300 ease-in-out hover:shadow-md"
                 >
                   <div className="flex items-center space-x-4">
                     <div className="h-2 w-2 rounded-full bg-blue-500"></div>
@@ -216,7 +214,7 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
         </Card>
 
         {/* Top Products */}
-        <Card className="col-span-3">
+        <Card className="col-span-7 lg:col-span-3">
           <CardHeader>
             <CardTitle>Top Products</CardTitle>
             <CardDescription>
@@ -226,7 +224,10 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
           <CardContent>
             <div className="space-y-4">
               {data?.topProducts?.map((product, index) => (
-                <div key={index} className="space-y-2">
+                <div
+                  key={index}
+                  className="cursor-pointer space-y-2 rounded-lg border px-4 py-4 transition-all duration-300 ease-in-out hover:shadow-md"
+                >
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium">
                       {product?.product_name}

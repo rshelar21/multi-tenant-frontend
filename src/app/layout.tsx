@@ -31,7 +31,7 @@ export default async function RootLayout({
   const theme = (await cookies()).get('theme')?.value;
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${dmSans.className} antialiased ${theme}`}>
         <ThemeProvider
           defaultTheme="light"
