@@ -21,17 +21,20 @@ export const CopyToClipboard = ({ text, className }: Props) => {
   };
 
   return (
-    <Button
-      variant="outline"
-      className={cn('m-0 border-0 bg-transparent p-0 outline-0', className)}
-      onClick={handleCopy}
-      title="Copy"
-    >
-      {isCopied ? (
-        <ClipboardCheck className="size-4 text-green-700" />
-      ) : (
-        <Clipboard className="size-4" />
-      )}
-    </Button>
+    <>
+      <Button
+        className={cn('m-0 border-0 px-2 py-2 outline-0', className)}
+        onClick={handleCopy}
+        title="Copy"
+        size="icon"
+        variant="outline"
+      >
+        {isCopied ? (
+          <ClipboardCheck className="size-4 text-green-700" />
+        ) : (
+          <Clipboard className="size-4" />
+        )}
+      </Button>
+    </>
   );
 };

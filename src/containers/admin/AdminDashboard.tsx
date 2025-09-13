@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { getAnalyticsDataAPI, getRevenueAPI } from '@/api/analytics';
 import { formatCurrency } from '@/utils';
+import { TruncateText, CopyToClipboard } from '@/components/common';
 
 const LoadingIndicator = () => {
   return (
@@ -182,15 +183,26 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
               {data?.orders?.map((order) => (
                 <div
                   key={order.id}
-                  className="flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-all duration-300 ease-in-out hover:shadow-md"
+                  className="flex cursor-pointer flex-col items-start justify-between gap-2 rounded-lg border p-4 transition-all duration-300 ease-in-out hover:shadow-md md:flex-row md:items-center"
                 >
                   <div className="flex items-center space-x-4">
                     <div className="h-2 w-2 rounded-full bg-blue-500"></div>
                     <div>
-                      <p className="font-medium">{order?.user?.name}</p>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="font-medium">{order?.name}</p>
+                      {/* <p className="text-muted-foreground text-sm">
                         Order {order.id}
-                      </p>
+                      </p> */}
+                      <div className="flex items-center gap-2">
+                        <p className="text-muted-foreground text-sm">
+                          Order ID:{' '}
+                          <TruncateText
+                            text={order.id}
+                            maxLength={15}
+                            textClassName="text-muted-foreground text-sm"
+                          />
+                        </p>
+                        <CopyToClipboard text={order.id} />
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
