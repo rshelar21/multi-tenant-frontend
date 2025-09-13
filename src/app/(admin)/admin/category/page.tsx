@@ -26,7 +26,10 @@ const AdminCategoryPage = () => {
 
   return (
     <div className="pb-8">
-      <PageHeading title="Category" subTitle="List of Category" />
+      <PageHeading
+        title="Category"
+        subTitle="Explore all predefined categories"
+      />
       <AdminCategoryTable
         data={data?.data || []}
         isLoading={isLoading}

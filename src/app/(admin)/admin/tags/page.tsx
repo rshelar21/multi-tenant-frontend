@@ -31,8 +31,8 @@ const AdminTagsPage = () => {
   return (
     <div className="pb-8">
       <PageHeading
-        title="Tags"
-        subTitle="List of tags"
+        title="Add Tag"
+        subTitle="Personalize your products with custom tags"
         actions={
           <Button
             variant="default"

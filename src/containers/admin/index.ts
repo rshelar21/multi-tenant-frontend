@@ -10,3 +10,5 @@ export { CreateTagsModal } from './tags/CreateTagsModal';
 
 // sidebar
 export { Sidebar } from './Sidebar';
+
+export {StripVerficationCard} from './StripVerficationCard'

@@ -70,7 +70,7 @@ const AdminProductsPage = () => {
     <div className="pb-8">
       <PageHeading
         title="Products"
-        subTitle="List of products"
+        subTitle="Manage and configure product details"
         actions={
           <Button
             variant="default"

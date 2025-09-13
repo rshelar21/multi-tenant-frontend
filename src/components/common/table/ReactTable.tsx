@@ -14,7 +14,6 @@ import {
   ColumnDef,
 } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { usePagination } from '@/hooks/use-pagination';
 import { IMeta } from '@/types/utils';
 import {
@@ -24,6 +23,7 @@ import {
   ChevronsLeft,
   ChevronsRight,
 } from 'lucide-react';
+import { StripVerficationCard } from '@/containers/admin';
 
 interface ReactTableProps<T> {
   isLoading: boolean;
@@ -38,8 +38,8 @@ interface ReactTableProps<T> {
 const TableSkeleton = () => {
   return (
     <>
-      {[...new Array(4)].map((i) => (
-        <TableRow className="last:border-0" key={i}>
+      {[...new Array(4)].map((i, index) => (
+        <TableRow className="last:border-0" key={`${i}-${index}`}>
           <TableCell colSpan={10}>
             <Skeleton className="h-8" />
           </TableCell>
@@ -122,14 +122,7 @@ export const ReactTable = <T,>({
             {isWarningMsg ? (
               <TableRow>
                 <TableCell colSpan={10}>
-                  <div className="flex flex-col items-center gap-2 py-2">
-                    <Button asChild size="sm">
-                      <Link prefetch href="/admin">
-                        Verify Account
-                      </Link>
-                    </Button>
-                    <p className="text-base">{isWarningMsg}</p>
-                  </div>
+                  <StripVerficationCard />
                 </TableCell>
               </TableRow>
             ) : (

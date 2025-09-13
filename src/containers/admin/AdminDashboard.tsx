@@ -25,8 +25,8 @@ const LoadingIndicator = () => {
   return (
     <div className="space-y-8">
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {[...new Array(3)].map((i) => (
-          <Card className="relative overflow-hidden" key={i}>
+        {[...new Array(3)].map((i, index) => (
+          <Card className="relative overflow-hidden" key={`${index}-${i}`}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Skeleton className="h-4 w-[150px] bg-gray-200 dark:bg-gray-50" />
             </CardHeader>
@@ -189,9 +189,7 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
                     <div className="h-2 w-2 rounded-full bg-blue-500"></div>
                     <div>
                       <p className="font-medium">{order?.name}</p>
-                      {/* <p className="text-muted-foreground text-sm">
-                        Order {order.id}
-                      </p> */}
+
                       <div className="flex items-center gap-2">
                         <p className="text-muted-foreground text-sm">
                           Order ID:{' '}
@@ -207,7 +205,6 @@ export const AdminDashboard = ({ isSuperAdmin }: { isSuperAdmin: boolean }) => {
                   </div>
                   <div className="flex items-center space-x-4">
                     <Badge variant={'default'}>Completed</Badge>
-                    {/* <p className="font-medium">{order.product.}</p> */}
                   </div>
                 </div>
               ))}
