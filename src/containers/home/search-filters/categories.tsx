@@ -66,7 +66,7 @@ export const Categories = () => {
         data={categoriesList}
       />
       <div
-        className="pointer-events-none absolute flex opacity-0"
+        className="pointer-events-none absolute flex opacity-0 gap-1.5"
         ref={measureRef}
         style={{ position: 'fixed', top: -9999, left: -9999 }}
       >
@@ -82,7 +82,7 @@ export const Categories = () => {
       </div>
       {/* visible */}
       <div
-        className="flex flex-nowrap items-center"
+        className="flex flex-nowrap items-center gap-1.5"
         ref={containerRef}
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}

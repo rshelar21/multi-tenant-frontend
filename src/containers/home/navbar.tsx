@@ -52,10 +52,10 @@ export const Navbar = () => {
   const user = useAppSelector(selectedUser);
 
   return (
-    <nav className="flex h-20 justify-between border-b bg-white font-medium dark:bg-black">
+    <nav className="flex h-20 justify-between border-b bg-white px-6 font-medium dark:bg-black">
       <Link
         href={process.env.NEXT_PUBLIC_APP_FRONTEND_URL!}
-        className="flex items-center pl-6"
+        className="flex items-center"
       >
         <span className={cn('text-5xl font-semibold', poppins.className)}>
           funroad
