@@ -52,7 +52,7 @@ export const Navbar = () => {
   const user = useAppSelector(selectedUser);
 
   return (
-    <nav className="flex h-20 justify-between border-b bg-white px-6 font-medium dark:bg-black">
+    <nav className="flex h-20 justify-between border-b bg-white px-6 font-medium md:px-0 dark:bg-black">
       <Link
         href={process.env.NEXT_PUBLIC_APP_FRONTEND_URL!}
         className="flex items-center"
